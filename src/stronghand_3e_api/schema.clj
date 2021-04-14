@@ -1,14 +1,14 @@
-(ns stronghand-3e-api.schema 
-    (:require   [compojure.api.sweet :refer [context POST resource]]
-                [ring.util.http-response :refer [ok]]
-                [schema.core :as s]))
+(ns stronghand-3e-api.schema
+  (:require   [compojure.api.sweet :refer [context POST resource]]
+              [ring.util.http-response :refer [ok]]
+              [schema.core :as s]))
 
 (s/defschema Total
   {:total s/Int})
 
 (def routes
-  (context "/schema" []
-    :tags ["schema"]
+  (context "/v1" []
+    :tags ["v1"]
 
     (POST "/plus" []
       :summary "plus with schema"
@@ -18,9 +18,9 @@
 
     (context "/plus" []
       (resource
-        {:get
-         {:summary "data-driven plus with schema"
-          :parameters {:query-params {:x s/Str, :y s/Str}}
-          :responses {200 {:schema Total}}
-          :handler (fn [{{:keys [x y]} :query-params}]
-                     (ok {:total (+ x y)}))}}))))
+       {:get
+        {:summary "data-driven plus with schema"
+         :parameters {:query-params {:x s/Str, :y s/Str}}
+         :responses {200 {:schema Total}}
+         :handler (fn [{{:keys [x y]} :query-params}]
+                    (ok {:total (+ x y)}))}}))))
