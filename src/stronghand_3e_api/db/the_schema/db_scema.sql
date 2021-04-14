@@ -1,0 +1,78 @@
+-- :doc Create at 14APR2021 by Saing
+-- :doc Modified at 14APR2021 by Saing
+-- : All the schema table here
+
+---: 1 User Information
+CREATE TABLE IF NOT EXISTS USERS (
+    ID VARCHAR (36) PRIMARY KEY,
+    FIRST_NAME VARCHAR (50),
+    MID_NAME VARCHAR (50),
+    LAST_NAME VARCHAR (50),
+    DESCRIPTION text,
+    EMAIL   VARCHAR (50) UNIQUE,
+    GENDER VARCHAR (1),
+    PROFILE_IMG VARCHAR,
+    WALLET VARCHAR (56) UNIQUE,
+    SEED VARCHAR (256),
+    PASSWORD VARCHAR (256) NOT NULL,
+    TEMP_TOKEN TEXT,
+    PIN VARCHAR (256),
+    USER_STATUS VARCHAR (36),
+    IS_INTERNAL BOOLEAN NOT NULL default FALSE,
+    NATIONALITY VARCHAR (50),
+    OCCUPATION VARCHAR (50),
+    PHONENUMBER VARCHAR (13) UNIQUE,
+    DOCUMENTS_ID VARCHAR (36),
+    STATUS_ID VARCHAR (36),
+    ADDRESS VARCHAR,
+    CREATED_AT TIMESTAMP NOT NULL default current_timestamp,
+    UPDATED_AT TIMESTAMP,
+    CREATED_BY VARCHAR (36),
+    UPDATED_BY VARCHAR (36)
+);
+
+-- :2 User status
+CREATE TABLE IF NOT EXISTS STATUS (
+    ID VARCHAR (36) PRIMARY KEY,
+    STATUS_NAME VARCHAR (10),
+    CREATED_AT timestamp NOT NULL default current_timestamp,
+    UPDATED_AT timestamp
+);
+-- : PRE DATA
+-- :name insert-status-data :! :n 
+INSERT INTO STATUS (ID, STATUS_NAME)
+VALUES  ('cb6fcc67-0c03-405c-9426-ce1685208f68', 'inactive'),
+        ('a1ca5b7b-d15c-44a3-9c06-c32793a16b89', 'active'),
+        ('7acb0fc7-c873-4b1a-83ad-3942e57bb151', 'verifying'),
+        ('17d67b96-3f29-4320-a945-b1fd86ff5486', 'verified'),
+        ('aeb6c1a1-fd82-4a30-8520-29d3d9435375', 'disabled');
+
+-- :3 DOCUMENTS table
+CREATE TABLE IF NOT EXISTS DOCUMENTS (
+    ID VARCHAR (36) PRIMARY KEY,
+    DOCUMENTS_NO VARCHAR (50),
+    DOCUMENTTYPE_ID VARCHAR (50),
+    DOCUMENT_URI TEXT NOT NULL,
+    FACE_URI TEXT NOT NULL,
+    ISSUE_DATE TEXT NOT NULL,
+    EXPIRE_DATE TEXT NOT NULL,
+    CREATED_AT TIMESTAMP NOT NULL default current_timestamp,
+    UPDATED_AT TIMESTAMP,
+    CREATED_BY VARCHAR (36) UNIQUE,
+    UPDATED_BY VARCHAR (36)
+);
+
+-- : 4 DOCUMENTTYPE table
+CREATE TABLE IF NOT EXISTS DOCUMENTTYPE (
+    ID VARCHAR (36) PRIMARY KEY,
+    DOCUMENT_NAME VARCHAR (15),
+    CREATED_AT timestamp NOT NULL default current_timestamp,
+    UPDATED_AT timestamp
+);
+
+-- : PRE DATA
+INSERT INTO DOCUMENTTYPE (ID, DOCUMENT_NAME)
+VALUES  ('819fb558-1d8e-4254-ab0a-a65cc509b8ca', 'National ID'),
+        ('c9b1552c-6424-4ce6-87d4-f45c8a3edc7a', 'Passport'),
+        ('92f63b80-5a3c-486d-b41f-bc6983649b93', 'Driver License');
+        

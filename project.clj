@@ -1,9 +1,18 @@
  (defproject stronghand-3e-api "0.1.0-SNAPSHOT"
-   :description "FIXME: write description"
+   :description "STRONGHAND 3E: CORE BACKEND"
    :dependencies [[org.clojure/clojure "1.10.0"]
                   [metosin/compojure-api "2.0.0-alpha30"]
                   [metosin/ring-swagger-ui "3.20.1"]
-
+                  ; ENV
+                  [aero "1.1.3"]
+                  ; DATABASE
+                  [com.layerware/hugsql "0.5.1"]
+                  [org.postgresql/postgresql "42.2.2"]
+                  ; mail
+                  [com.draines/postal "2.0.3"]
+                  ; Hash
+                  [buddy/buddy-hashers "1.4.0"]
+                  [buddy/buddy-auth "2.2.0"]
                   ;Logging
                   [org.clojure/tools.logging "1.1.0"]]
    :ring {:handler stronghand-3e-api.handler/app}
