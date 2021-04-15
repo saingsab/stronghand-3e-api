@@ -7,3 +7,5 @@
   (str (get (status/get-status-by-name conn/db {:STATUS_NAME "inactive"}) :id)))
 (status/get-status-by-name conn/db {:STATUS_NAME "inactive"}) :id)
 status-id 
+(use '[stronghand-3e-api.account.register])
+(account-by-email "ayoung.sag@gmail.com" "123456")

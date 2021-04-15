@@ -1,7 +1,13 @@
 (ns stronghand-3e-api.account.register
   (:require [aero.core :refer (read-config)]
+            [ring.util.http-response :refer :all]
+            [buddy.hashers :as hashers]
+            [stronghand-3e-api.utils.validate :as validate]
+            [stronghand-3e-api.utils.mailling :as mailling]
+            [clojure.tools.logging :as log]
             [stronghand-3e-api.utils.conn :as conn]
-            [stronghand-3e-api.db.sp-status :as status]))
+            [stronghand-3e-api.db.sp-status :as status]
+            [stronghand-3e-api.db.sp-users :as users]))
 
 (def env (read-config ".config.edn"))
 (defn uuid [] (str (java.util.UUID/randomUUID)))
@@ -11,7 +17,7 @@
 
 (def user-id (atom (uuid)))
 (def temp-token (atom (uuid)))
-(def pin-code (atom (genpin/getpin)))
+;; (def pin-code (atom (genpin/getpin)))
 
 (defn phone-not-exist?
   [phone]
@@ -34,9 +40,9 @@
        ; SAVE to Database and send welcome message
         (users/register-users-by-mail conn/db {:ID  @user-id  :EMAIL email :PASSWORD (hashers/derive password) :TEMP_TOKEN @temp-token :STATUS_ID status-id})
         ; Send email function here
-        (mailling/send-mail! email
-                             "Activation Required"
-                             (str "Welcome to Selendra! <br/> <br/> To complete verification please click the link below <br/> <br/><a href='https://" (str (get env :baseapi)) ".selendra.com/pub/v1/account-confirmation?userid=" @user-id "&verification-code=" @temp-token "' style='padding:10px 28px;background:#0072BC;color:#fff;text-decoration:none' target='_blank' data-saferedirecturl='https://api.selendra.com/pub/v1/account-confirmation?userid=" @user-id "&verification-code=" @temp-token "' >Verify Email</a> <br/> <br/> Best regards, <br/> Zeetomic Team <br/> https://selendra.com"))
+        ;; (mailling/send-mail! email
+        ;;                      "Activation Required"
+        ;;                      (str "Welcome to Selendra! <br/> <br/> To complete verification please click the link below <br/> <br/><a href='https://" (str (get env :baseapi)) ".selendra.com/pub/v1/account-confirmation?userid=" @user-id "&verification-code=" @temp-token "' style='padding:10px 28px;background:#0072BC;color:#fff;text-decoration:none' target='_blank' data-saferedirecturl='https://api.selendra.com/pub/v1/account-confirmation?userid=" @user-id "&verification-code=" @temp-token "' >Verify Email</a> <br/> <br/> Best regards, <br/> Zeetomic Team <br/> https://selendra.com"))
         (reset! user-id (uuid))
         (reset! temp-token (uuid))
         (ok {:message (str "We've sent a message to " email " with a link to activate your account.")})
