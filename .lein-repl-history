@@ -1,0 +1,9 @@
+(require '[stronghand-3e-api.utils.conn :as conn])
+(use '[stronghand-3e-api.account.register])
+(def status-id
+  (str (get (status/get-status-by-name conn/db {:STATUS_NAME "inactive"}) :id)))
+(require '[stronghand-3e-api.utils.conn :as conn] '[stronghand-3e-api.db.sp-status :as status])
+(def status-id
+  (str (get (status/get-status-by-name conn/db {:STATUS_NAME "inactive"}) :id)))
+(status/get-status-by-name conn/db {:STATUS_NAME "inactive"}) :id)
+status-id 
