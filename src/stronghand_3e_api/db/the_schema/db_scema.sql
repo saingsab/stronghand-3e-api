@@ -136,11 +136,15 @@ VALUES  ('504e7e78-4c63-4d00-959b-55509a1a06zx', 'Sensor Problems', 5.00, '504e7
 CREATE TABLE IF NOT EXISTS ORDERS(
     ID	             VARCHAR (36) PRIMARY KEY,
     ISSUE_ID	     VARCHAR (36),
-    SHIPPING_ADDRESS TEXT,
     USERS_ID	     VARCHAR (36),
     OTHERS           TEXT,
+    IMAGES           TEXT[],
+    LOCATIONS        TEXT,
     TOTAL	         NUMERIC,
-    ORDERS_ID	     VARCHAR (36),
+    ORDER_STATUS     VARCHAR (36),
+    APPOINTMENT_AT	 TIMESTAMP,
+    SOLUTIONS        TEXT,
+    TECHNICIANS      TEXT[]
     CREATED_AT	     TIMESTAMP NOT NULL default current_timestamp,
     CREATED_BY	     VARCHAR (36),
     UPDATED_BY	     VARCHAR (36),
@@ -186,3 +190,13 @@ INSERT INTO USER_LEVEL(ID, LEVEL_DEC)
 VALUES  ('8fd6d854-4046-4242-ac01-9b820c2b513d', 'Technician'),
         ('01a8bd76-a0c0-41ff-aece-0614e5349ddd', 'Operation'),
         ('9ca90744-65a3-4879-84e9-908cdb3d63e7', 'User');
+
+-- : 12 RATES Table
+CREATE TABLE IF NOT EXISTS RATES(
+    ID	        VARCHAR (36) PRIMARY KEY,
+    RATE_STAR	NUMERIC,
+    RATE_DEC	VARCHAR,
+    RATE_TO     VARCHAR (36) NOT NULL,
+    CREATED_AT  TIMESTAMP NOT NULL default current_timestamp,
+    CREATED_BY  VARCHAR (36)
+);
