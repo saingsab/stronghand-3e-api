@@ -13,6 +13,8 @@
                   ; Hash
                   [buddy/buddy-hashers "1.4.0"]
                   [buddy/buddy-auth "2.2.0"]
+                  ;; Http Client
+                  [clj-http "3.12.0"]
                   ;Logging
                   [org.clojure/tools.logging "1.1.0"]]
    :ring {:handler stronghand-3e-api.handler/app}

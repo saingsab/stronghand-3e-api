@@ -9,3 +9,10 @@
 status-id 
 (use '[stronghand-3e-api.account.register])
 (account-by-email "ayoung.sag@gmail.com" "123456")
+(use '[stronghand-3e-api.utils.sms])
+(send-sms "developer backend" "+85510299109")
+(use '[stronghand-3e-api.utils.sms])
+(send-sms "developer backend" "+85510299109")
+(use '[stronghand-3e-api.utils.sms])
+(send-sms "bitcoin" "+85510299109")
+(send-sms "turn off the aircon" "+85510258251")
