@@ -4,6 +4,9 @@
             [buddy.hashers :as hashers]
             [stronghand-3e-api.utils.validate :as validate]
             [stronghand-3e-api.utils.mailling :as mailling]
+            [stronghand-3e-api.utils.writelog :as writelog]
+            [stronghand-3e-api.utils.genpin :as genpin]
+            [stronghand-3e-api.utils.sms :as sms]
             [clojure.tools.logging :as log]
             [stronghand-3e-api.utils.conn :as conn]
             [stronghand-3e-api.db.sp-status :as status]
@@ -17,7 +20,7 @@
 
 (def user-id (atom (uuid)))
 (def temp-token (atom (uuid)))
-;; (def pin-code (atom (genpin/getpin)))
+(def pin-code (atom (genpin/getpin)))
 
 (defn phone-not-exist?
   [phone]
@@ -52,23 +55,22 @@
     ; Fale
     (ok {:message "Your email doesn't seem right!"})))
 
-;; (defn account-by-phone
-;;   [phone password]
-;;   (if (= (validate/phone? phone) true)
-;;   ; True
-;;     (if (= (phone-not-exist? phone) true)
-;;       (try
-;;         ; SAVE to Database and send welcome message
-;;         (users/register-users-by-phone conn/db {:ID (java.util.UUID/randomUUID) :PHONENUMBER phone :PASSWORD (hashers/derive password) :TEMP_TOKEN @pin-code :STATUS_ID status-id})
-;;         (client/post (str (get env :smsendpoint)) {:form-params {:smscontent (str "Your SELENDRA verification code is:" @pin-code) :phonenumber phone} :content-type :json})
-;;         ; (client/post (str (get env :smsendpoint)) {:form-params {:smscontent (str "Welcome to ZEETOMIC The Platform for the Issuance and Management of Digital Asset") :phonenumber phone} :content-type :json})
-;;         (reset! pin-code (genpin/getpin))
-;;         (ok {:message "Successfully registered!"})
-;;         (catch Exception ex
-;;           (log/error ex)))
-;;       (ok {:message "Your phone number already exists!"}))
-;;   ; Fale
-;;     (ok {:message "Your phone number doesn't seem right!"})))
+(defn account-by-phone
+  [phone password]
+  (if (= (validate/phone? phone) true)
+  ; True
+    (if (= (phone-not-exist? phone) true)
+      (try
+        ; SAVE to Database and send welcome message
+        (users/register-users-by-phone conn/db {:ID (java.util.UUID/randomUUID) :PHONENUMBER phone :PASSWORD (hashers/derive password) :TEMP_TOKEN @pin-code :STATUS_ID status-id})
+        (sms/send-sms (str "Your STRONGHAND 3E verification code is:" @pin-code) phone)
+        (reset! pin-code (genpin/getpin))
+        (ok {:message "Successfully registered!"})
+        (catch Exception ex
+          (log/error ex)))
+      (ok {:message "Your phone number already exists!"}))
+  ; Fale
+    (ok {:message "Your phone number doesn't seem right!"})))
 
 ;;   ; Account from OAuth ID token
 
@@ -84,13 +86,13 @@
 ;;         {:error {:message "Something went wrong on our end"}}))
 ;;     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
-;; (defn resend-code
-;;   [phone]
-;;   (try
-;;     (users/update-temp conn/db {:TEMP_TOKEN @pin-code :PHONENUMBER phone})
-;;     (client/post (str (get env :smsendpoint)) {:form-params {:smscontent (str "Your SELENDRA verification code is:" @pin-code) :phonenumber phone} :content-type :json})
-;;     (reset! pin-code (genpin/getpin))
-;;     (ok {:message (str "We've sent you an SMS with the code to " phone)})
-;;     (catch Exception ex
-;;       (writelog/op-log! (str "ERROR : FN resend-code " (.getMessage ex)))
-;;       {:error {:message "Something went wrong on our end"}})))
+(defn resend-code
+  [phone]
+  (try
+    (users/update-temp conn/db {:TEMP_TOKEN @pin-code :PHONENUMBER phone})
+    (sms/send-sms (str "Your STRONGHAND 3E verification code is:" @pin-code) phone)
+    (reset! pin-code (genpin/getpin))
+    (ok {:message (str "We've sent you an SMS with the code to " phone)})
+    (catch Exception ex
+      (writelog/op-log! (str "ERROR : FN resend-code " (.getMessage ex)))
+      {:error {:message "Something went wrong on our end"}})))

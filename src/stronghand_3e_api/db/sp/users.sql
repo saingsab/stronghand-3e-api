@@ -17,3 +17,14 @@ WHERE EMAIL = :EMAIL;
 -- :name get-all-users-by-id :? :1
 SELECT * FROM USERS 
 WHERE ID = :ID;
+
+-- :name update-temp :! :n
+UPDATE USERS
+SET TEMP_TOKEN = :TEMP_TOKEN 
+WHERE PHONENUMBER   = :PHONENUMBER;
+
+-- :name update-temp-mail :! :n
+UPDATE USERS
+SET TEMP_TOKEN = :TEMP_TOKEN,
+    STATUS_ID  = :STATUS_ID
+WHERE EMAIL   = :EMAIL;
