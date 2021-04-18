@@ -28,3 +28,96 @@ UPDATE USERS
 SET TEMP_TOKEN = :TEMP_TOKEN,
     STATUS_ID  = :STATUS_ID
 WHERE EMAIL   = :EMAIL;
+
+-- :name user-activation :! :n
+UPDATE USERS
+SET TEMP_TOKEN = :TEMP_TOKEN,
+    STATUS_ID = :STATUS_ID
+WHERE ID = :ID;
+
+-- :name user-activation-by-phone :! :n
+UPDATE USERS
+SET TEMP_TOKEN = :TEMP_TOKEN,
+    STATUS_ID = :STATUS_ID
+WHERE PHONENUMBER = :PHONENUMBER;
+
+-- :name get-users-token :? :1
+SELECT ID, TEMP_TOKEN
+FROM USERS 
+WHERE ID = :ID;
+
+-- :name get-users-token-phone :? :1
+SELECT PHONENUMBER, TEMP_TOKEN
+FROM USERS 
+WHERE PHONENUMBER = :PHONENUMBER;
+
+-- :name user-activation :! :n
+UPDATE USERS
+SET TEMP_TOKEN = :TEMP_TOKEN,
+    STATUS_ID = :STATUS_ID
+WHERE ID = :ID;
+
+-- :name user-activation-by-phone :! :n
+UPDATE USERS
+SET TEMP_TOKEN = :TEMP_TOKEN,
+    STATUS_ID = :STATUS_ID
+WHERE PHONENUMBER = :PHONENUMBER;
+
+-- :name update-status :! :n
+UPDATE USERS
+SET NATIONALITY = :NATIONALITY,
+    OCCUPATION  = :OCCUPATION,
+    ADDRESS = :ADDRESS,
+    STATUS_ID = :STATUS_ID
+where ID = :ID;
+
+-- :name setup-user-profile :! :n
+-- :doc Update status after setup profile, last modified:20201207SAING
+UPDATE USERS
+SET FIRST_NAME  = :FIRST_NAME,
+    MID_NAME    = :MID_NAME,
+    LAST_NAME   = :LAST_NAME,
+    GENDER      = :GENDER,
+    PROFILE_IMG = :PROFILE_IMG,
+    ADDRESS     = :ADDRESS,
+    STATUS_ID   = :STATUS_ID
+WHERE ID = :ID;
+
+-- :name reset-password :! :n
+UPDATE USERS
+SET PASSWORD = :PASSWORD, 
+    TEMP_TOKEN = 0
+WHERE PHONENUMBER   = :PHONENUMBER;
+
+-- :name reset-password-by-mail :! :n
+UPDATE USERS
+SET PASSWORD = :PASSWORD, 
+    TEMP_TOKEN = 0
+WHERE EMAIL   = :EMAIL;
+
+-- :name change-password :! :n
+UPDATE USERS
+SET PASSWORD = :PASSWORD
+WHERE ID   = :ID;
+
+-- :name update-temp :! :n
+UPDATE USERS
+SET TEMP_TOKEN = :TEMP_TOKEN 
+WHERE PHONENUMBER   = :PHONENUMBER;
+
+-- :name update-temp-mail :! :n
+UPDATE USERS
+SET TEMP_TOKEN = :TEMP_TOKEN,
+    STATUS_ID  = :STATUS_ID
+WHERE EMAIL   = :EMAIL;
+
+-- :name update-phone-by-id :! :n
+UPDATE USERS
+SET PHONENUMBER = :PHONENUMBER 
+WHERE ID   = :ID;
+
+-- :name set-phonenumber-by-id :! :n
+UPDATE USERS
+SET PHONENUMBER = :PHONENUMBER,
+    TEMP_TOKEN  = :TEMP_TOKEN
+WHERE ID   = :ID;
