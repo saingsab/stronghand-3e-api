@@ -19,6 +19,7 @@
 
 (defn authorized?
   [token]
+  (print "Found ID")
   (if (= true (.contains (str (token? token)) "_id"))
     (try
       (if (= (get (token? token) :_id) (get (users/get-users-token conn/db {:ID (get (token? token) :_id)}) :id))

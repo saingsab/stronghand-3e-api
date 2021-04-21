@@ -1,4 +1,7 @@
 {:dburi "postgres://7d890602844498A6d72CbDdC74A22198260D6256:0xe081793a6ddbc3671820d316f1b5455b3c37fa3f4764bd34183bf972a014f7bb@localhost:5432/stronghand_3e_db"
 ;;  SMS
  :TWILIO_URL "https://api.twilio.com/2010-04-01/Accounts/ACb47fc250e00c33e95a1b307fe12424ee/Messages.json"
- :U_KEY "Basic QUNiNDdmYzI1MGUwMGMzM2U5NWExYjMwN2ZlMTI0MjRlZToxZmUzZGY4ZmI1MmZhODI1MGNhZTJiOTBkMjIxYTg5Yg=="}
+ :U_KEY "Basic QUNiNDdmYzI1MGUwMGMzM2U5NWExYjMwN2ZlMTI0MjRlZToxZmUzZGY4ZmI1MmZhODI1MGNhZTJiOTBkMjIxYTg5Yg=="
+ :txlog "logs/tx.log"
+ :oplog "logs/op.log"
+ :syslog "logs/sys.log"}
