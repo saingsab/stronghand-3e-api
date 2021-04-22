@@ -19,4 +19,6 @@ INSERT INTO ORDERS (
     :CREATED_BY
 );
 
--- :name get-price :
+-- :name get-issue-by-id :? :1
+SELECT * FROM ISSUES
+WHERE ID = :ID;

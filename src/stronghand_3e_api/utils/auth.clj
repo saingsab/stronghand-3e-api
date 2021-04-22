@@ -11,7 +11,7 @@
   [token]
   (if (= true (.contains token "Bearer"))
     (try
-      (let [payload (jwt/unsign (nth (str/split token #" ") 1) (get (read-config ".config.edn") :jwtsec))] payload)
+      (let [payload (jwt/unsign (nth (str/split token #" ") 1) (get (read-config ".config.edn") :JWTSEC))] payload)
       (catch Exception ex
         ex
         (writelog/op-log! (str "ERROR : " (.getMessage ex)))))
@@ -19,7 +19,6 @@
 
 (defn authorized?
   [token]
-  (print "Found ID")
   (if (= true (.contains (str (token? token)) "_id"))
     (try
       (if (= (get (token? token) :_id) (get (users/get-users-token conn/db {:ID (get (token? token) :_id)}) :id))

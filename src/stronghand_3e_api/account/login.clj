@@ -51,7 +51,7 @@
 (defn tokens
     ; 1day to be expired
   [info]
-  (jwt/sign {:_id info :exp (time/plus (time/now) (time/seconds 86400))} (get (read-config ".config.edn") :jwtsec)))
+  (jwt/sign {:_id info :exp (time/plus (time/now) (time/seconds 86400))} (get (read-config ".config.edn") :JWTSEC)))
 
 (defn is-no-active-mail?
   [email]
