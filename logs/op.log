@@ -38,3 +38,11 @@ ERROR : FN make-order Batch entry 0 INSERT INTO ORDERS (
 ERROR : FN make-order Parameter Mismatch: :ID parameter data not found. At: 2021-04-22T14:58:01.890+07:00
 ERROR : FN make-order class java.math.BigDecimal cannot be cast to class java.lang.String (java.math.BigDecimal and java.lang.String are in module java.base of loader 'bootstrap') At: 2021-04-22T15:01:40.702+07:00
 ERROR : FN get-recent-order Parameter Mismatch: :CREATED_BY parameter data not found. At: 2021-04-22T16:15:52.323+07:00
+ERROR : FN update-order-status Parameter Mismatch: :STATUS_ID parameter data not found. At: 2021-04-22T20:47:50.910+07:00
+ERROR : FN canncled? Parameter Mismatch: :ID parameter data not found. At: 2021-04-22T21:39:46.841+07:00
+ERROR : FN get-order-from-date-to-date ERROR: operator does not exist: timestamp without time zone >= character varying
+  Hint: No operator matches the given name and argument types. You might need to add explicit type casts.
+  Position: 379 At: 2021-04-22T23:38:45.719+07:00
+ERROR : FN get-order-from-date-to-date ERROR: operator does not exist: timestamp without time zone >= character varying
+  Hint: No operator matches the given name and argument types. You might need to add explicit type casts.
+  Position: 379 At: 2021-04-22T23:43:33.800+07:00

@@ -17,6 +17,17 @@
     true
     false))
 
+;; List order status Id
+(defn list-order-status
+  [token]
+  (if (= (auth/authorized? token) true)
+    (try
+      (ok (orders/get-all-order-status conn/db))
+      (catch Exception ex
+        (writelog/op-log! (str "ERROR : FN list-order-status  " (.getMessage ex)))
+        {:error {:message "Internal server error"}}))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
 (defn make-order
   [token issue-id others images locations appointment-at]
   (if (= (auth/authorized? token) true)
@@ -61,7 +72,69 @@
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
 ;; Order Cancalled
+;; Condition Only Staff or Owner and in the placing order only
+(defn cancelled?
+  [token order-id]
+  (if (= (auth/authorized? token) true)
+    (let [user-id (get (auth/token? token) :_id)]
+      (if (or (true? (is-staff? user-id)) (= user-id (get (orders/get-order-by-id conn/db {:ID order-id}) :created_by)))
+        (try
+          (println (get (orders/get-order-status conn/db {:ORDER_STATUS_DEC "Cancelled"}) :id))
+          (orders/update-orders conn/db {:ID order-id
+                                         :SOLUTIONS nil
+                                         :TOTAL nil
+                                         :ORDER_STATUS (get (orders/get-order-status conn/db {:ORDER_STATUS_DEC "Cancelled"}) :id)
+                                         :UPDATED_BY user-id})
+          (ok {:message "Order status successfully cancelled"})
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN canncled? " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
-;; Update order status by operation or tech team only
-;; (defn update-order-status
-;;   [token status-id])
+  ;; Update order status by operation or tech team only
+(defn update-order-status
+  [token order-id solutions total status-id]
+  (if (= (auth/authorized? token) true)
+    (let [user-id (get (auth/token? token) :_id)]
+      (if (true? (is-staff? user-id))
+        (try
+          (orders/update-orders conn/db {:ID order-id
+                                         :SOLUTIONS solutions
+                                         :TOTAL total
+                                         :ORDER_STATUS status-id
+                                         :UPDATED_BY user-id})
+          (ok {:message "Order status successfully updated"})
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN update-order-status " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;;  View Order by status
+(defn get-order-by-status
+  [token status-id]
+  (if (= (auth/authorized? token) true)
+    (let [user-id (get (auth/token? token) :_id)]
+      (if (true? (is-staff? user-id))
+        (try
+          (ok (orders/get-order-by-status conn/db {:ORDER_STATUS status-id}))
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN get-order-by-status " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;;  View Order from date to date
+(defn get-order-from-date-to-date
+  [token from-date to-date]
+  (if (= (auth/authorized? token) true)
+    (let [user-id (get (auth/token? token) :_id)]
+      (if (true? (is-staff? user-id))
+        (try
+          (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE from-date :TO_DATE to-date}))
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN get-order-from-date-to-date " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
