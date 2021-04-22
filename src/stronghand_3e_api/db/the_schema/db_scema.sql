@@ -172,7 +172,8 @@ VALUES  ('504e7e78-4c63-4d00-959b-55509a1a06f8', 'Place Order'),
         ('e285725c-3958-4700-a751-f5e57e600a16', 'Technician Accepted'),
         ('1a8bdfc5-a11a-42dd-b7e5-7d36cc605be4', 'On Our Way'),
         ('1a8bdfc5-a11a-42dd-b7e5-7d36cc605bee', 'Arrived and Fixing'),
-        ('06eb36d5-8a81-477a-b4c1-2e72566559cc', 'Successfully Completed');
+        ('06eb36d5-8a81-477a-b4c1-2e72566559cc', 'Successfully Completed')
+        ('06eb36d5-8a81-477a-b4c1-2e72566559dd', 'Cancelled');
 
 -- : 11 STAFF LEVEL
 CREATE TABLE IF NOT EXISTS USER_LEVEL(
