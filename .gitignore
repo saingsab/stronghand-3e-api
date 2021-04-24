@@ -1,3 +1,4 @@
 .env
 dbs/
 target/
+.config.edn

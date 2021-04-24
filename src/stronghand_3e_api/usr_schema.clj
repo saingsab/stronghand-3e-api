@@ -7,8 +7,8 @@
               [stronghand-3e-api.account.activation :as activation]
               [stronghand-3e-api.account.login :as login]))
 
-(s/defschema Total
-  {:total s/Int})
+;; (s/defschema Total
+;;   {:total s/Int})
 
 (def routes
   (context "/usr" []
