@@ -1,11 +1,12 @@
-(ns stronghand-3e-api.op.order
+(ns stronghand-3e-api.ops.order
   (:require [aero.core :refer (read-config)]
             [ring.util.http-response :refer :all]
             [stronghand-3e-api.utils.writelog :as writelog]
             [stronghand-3e-api.utils.auth :as auth]
             [stronghand-3e-api.utils.conn :as conn]
             [stronghand-3e-api.db.sp-orders :as orders]
-            [stronghand-3e-api.db.sp-issues :as issues]))
+            [stronghand-3e-api.db.sp-issues :as issues]
+            [stronghand-3e-api.db.sp-rates :as rates]))
 
 (def env (read-config ".config.edn"))
 (defn uuid [] (str (java.util.UUID/randomUUID)))
@@ -154,4 +155,22 @@
             (writelog/op-log! (str "ERROR : FN get-order-from-date-to-date " (.getMessage ex)))
             {:error {:message "Internal server error"}}))
         (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;; Rates technicians
+(defn ret-technician
+  [token rate-star rate-dec rate-to]
+  (if (= (auth/authorized? token) true)
+    (let [created-by (get (auth/token? token) :_id)]
+      (try
+        (reset! txid (java.util.UUID/randomUUID))
+        (rates/set-rates conn/db {:ID @txid
+                                  :RATE_STAR rate-star
+                                  :RATE_DEC rate-dec
+                                  :RATE_TO rate-to
+                                  :CREATED_BY created-by})
+        (ok {:message "Thank you for your rating"})
+        (catch Exception ex
+          (writelog/op-log! (str "ERROR : FN make-order " (.getMessage ex)))
+          {:error {:message "Internal server error"}})))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))

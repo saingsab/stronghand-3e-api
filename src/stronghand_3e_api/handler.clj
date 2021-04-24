@@ -1,7 +1,8 @@
 (ns stronghand-3e-api.handler
   (:require [compojure.api.sweet :refer :all]
             ;;[ring.util.http-response :refer :all]
-            [stronghand-3e-api.schema :as sc]))
+            [stronghand-3e-api.usr-schema :as usrsc]
+            [stronghand-3e-api.ops-schema :as opssc]))
 
 (def app
   (api
@@ -13,4 +14,5 @@
                    :contact {:name "Officail Website"
                              :email "saing.sab@gmail.com"
                              :url "https://www.stronghand3e.com"}}}}}
-   sc/routes))
+   usrsc/routes
+   opssc/routes))
