@@ -138,3 +138,20 @@
             {:error {:message "Internal server error"}}))
         (ok {:error {:message "Unauthorized operation not permitted"}})))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;; Assgin Technician
+(defn assign-technicains
+  [token technicians order-status]
+  (if (= (auth/authorized? token) true)
+    (let [user-id (get (auth/token? token) :_id)]
+      (if (true? (is-staff? user-id))
+        (try
+          (orders/assign-technician conn/db {:TECHNICIANS technicians
+                                             :ORDER_STATUS order-status
+                                             :CREATED_BY user-id})
+          (ok {:message "Successfully assigned technicains"})
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN get-order-from-date-to-date " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
