@@ -1,4 +1,5 @@
+.config.edn
+.config.edn.sample
 .env
 dbs/
 target/
-.config.edn
