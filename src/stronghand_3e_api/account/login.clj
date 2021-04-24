@@ -76,7 +76,7 @@
         (ok {:error {:message "Sorry, your user are not active"}})))
     (ok {:message "Your email doesn't seem right!"})))
 
-(defn loginbyphone
+(defn login-by-phone
   [phone password]
   (if (= (validate/phone? phone) true)
     (if (= (phone-not-exist? phone) true)
