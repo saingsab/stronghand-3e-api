@@ -43,9 +43,9 @@
        ; SAVE to Database and send welcome message
         (users/register-users-by-mail conn/db {:ID  @user-id  :EMAIL email :PASSWORD (hashers/derive password) :TEMP_TOKEN @temp-token :STATUS_ID status-id})
         ; Send email function here
-        ;; (mailling/send-mail! email
-        ;;                      "Activation Required"
-        ;;                      (str "Welcome to Selendra! <br/> <br/> To complete verification please click the link below <br/> <br/><a href='https://" (str (get env :baseapi)) ".selendra.com/pub/v1/account-confirmation?userid=" @user-id "&verification-code=" @temp-token "' style='padding:10px 28px;background:#0072BC;color:#fff;text-decoration:none' target='_blank' data-saferedirecturl='https://api.selendra.com/pub/v1/account-confirmation?userid=" @user-id "&verification-code=" @temp-token "' >Verify Email</a> <br/> <br/> Best regards, <br/> Zeetomic Team <br/> https://selendra.com"))
+        (mailling/send-mail! email
+                             "Activation Required"
+                             (str "Welcome to STRONGHAND3E! <br/> <br/> To complete verification please click the link below <br/> <br/><a href='https://" (str (get env :baseapi)) ".stronghand3e.com/usr/account-confirmation?userid=" @user-id "&verification-code=" @temp-token "' style='padding:10px 28px;background:#0072BC;color:#fff;text-decoration:none' target='_blank' data-saferedirecturl='https://api.stronghand3e.com/usr/account-confirmation?userid=" @user-id "&verification-code=" @temp-token "' >Verify Email</a> <br/> <br/> Best regards, <br/> STRONGHAND 3E Team <br/> https://stronghand3e.com"))
         (reset! user-id (uuid))
         (reset! temp-token (uuid))
         (ok {:message (str "We've sent a message to " email " with a link to activate your account.")})

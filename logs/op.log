@@ -46,3 +46,5 @@ ERROR : FN get-order-from-date-to-date ERROR: operator does not exist: timestamp
 ERROR : FN get-order-from-date-to-date ERROR: operator does not exist: timestamp without time zone >= character varying
   Hint: No operator matches the given name and argument types. You might need to add explicit type casts.
   Position: 379 At: 2021-04-22T23:43:33.800+07:00
+454 Throttling failure: Daily message quota exceeded.
+ At: 2021-04-24T23:40:58.355+07:00
