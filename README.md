@@ -1,8 +1,6 @@
 # stronghand-3e-api
 
-FIXME
-
-## Usage
+[![Build Status](https://www.travis-ci.com/saingsab/stronghand-3e-api.svg?branch=main)](https://www.travis-ci.com/saingsab/stronghand-3e-api)
 
 ### Run the application locally
 
@@ -21,4 +19,4 @@ java -jar target/server.jar
 
 ## License
 
-Copyright ©  FIXME
+Copyright ©  saing sab
