@@ -41,4 +41,4 @@ services:
       - web
       - internal
     working_dir: /usr/src/myapp
-     command: sh -c "lein do clean, ring uberjar && java -jar target/server.jar"
+    command: sh -c "lein do clean, ring uberjar && java -jar target/server.jar"
