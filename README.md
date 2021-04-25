@@ -1,6 +1,6 @@
 # stronghand-3e-api
 
-[![Build Status](https://www.travis-ci.com/saingsab/stronghand-3e-api.svg?branch=main)](https://www.travis-ci.com/saingsab/stronghand-3e-api)
+[![build and deploy](https://github.com/saingsab/stronghand-3e-api/actions/workflows/build_deploy.yml/badge.svg)](https://github.com/saingsab/stronghand-3e-api/actions/workflows/build_deploy.yml)
 
 ### Run the application locally
 
