@@ -2,6 +2,8 @@ language: clojure
 
 lein: 2.9.4 # version 2 and up
 # script: lein test && lein do clean, ring uberjar && ls
+install:
+  - echo '$RHOST' >> $HOME/.ssh/known_hosts
 script: 
   - echo "$ID_RSA" > ~/.ssh/id_rsa
   - echo "$RKEY" > ~/.ssh/strongands3e.pem
