@@ -3,12 +3,8 @@ language: clojure
 lein: 2.9.4 # version 2 and up
 # script: lein test && lein do clean, ring uberjar && ls
 script: 
-  # - mkdir -p ~/.ssh
-  # - chmod 700 ~/.ssh
-  - echo "$RHOST"
-  - ls ~/.ssh/
-  # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-  # - echo "$ID_RSA" > ~/.ssh/id_ed25519
-  # - echo "$RKEY" > ~/.ssh/strongands3e.pem
-  # - chmod 400 ~/.ssh/strongands3e.pem
-  # - ssh -i "~/.ssh/strongands3e.pem" ubuntu@ubuntu@ec2-13-229-100-147.ap-southeast-1.compute.amazonaws.com "cd /home/ubuntu/stronghand3e && ls && exit"
+  - echo "$ID_RSA" > ~/.ssh/id_rsa
+  - echo "$RKEY" > ~/.ssh/strongands3e.pem
+  - chmod 400 ~/.ssh/strongands3e.pem
+  - ssh -i "~/.ssh/strongands3e.pem" ubuntu@ec2-13-229-100-147.ap-southeast-1.compute.amazonaws.com "cd /home/ubuntu/stronghand3e && ls && exit"
+
