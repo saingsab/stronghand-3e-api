@@ -19,4 +19,4 @@ java -jar target/server.jar
 
 ## License
 
-Copyright © 2021 STRONGHAND 3E
+Copyright © 2021 STRONGHAND 3E DEV
