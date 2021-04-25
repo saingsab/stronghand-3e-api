@@ -4,3 +4,4 @@
 dbs/
 target/
 target
+remote_deploy.sh

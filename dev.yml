@@ -27,18 +27,3 @@ services:
       - web
     depends_on:
       - db
-  apiserver:
-    image: clojure
-    container_name: "stronghand_3e_api"
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - 3001:3000
-    volumes:
-      - ./:/usr/src/myapp
-    networks:
-      - web
-      - internal
-    working_dir: /usr/src/myapp
-     command: sh -c "lein do clean, ring uberjar && java -jar target/server.jar"

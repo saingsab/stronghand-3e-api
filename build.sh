@@ -1,0 +1,1 @@
+lein do clean, ring uberjar
