@@ -8,5 +8,5 @@ script:
   - echo "$ID_RSA" > ~/.ssh/id_rsa
   - echo "$RKEY" > ~/.ssh/strongands3e.pem
   - chmod 400 ~/.ssh/strongands3e.pem
-  - ssh -i "~/.ssh/strongands3e.pem" ubuntu@ec2-13-229-100-147.ap-southeast-1.compute.amazonaws.com "cd /home/ubuntu/stronghand3e && ls && exit"
+  - ssh -o "StrictHostKeyChecking no" -i "~/.ssh/strongands3e.pem" ubuntu@ec2-13-229-100-147.ap-southeast-1.compute.amazonaws.com "cd /home/ubuntu/stronghand3e && ls && exit"
 
