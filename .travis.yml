@@ -5,7 +5,8 @@ lein: 2.9.4 # version 2 and up
 script: 
   # - mkdir -p ~/.ssh
   # - chmod 700 ~/.ssh
-  - cat "$RHOST"
+  - echo "$RHOST"
+  - ls ~/.ssh/
   # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   # - echo "$ID_RSA" > ~/.ssh/id_ed25519
   # - echo "$RKEY" > ~/.ssh/strongands3e.pem
