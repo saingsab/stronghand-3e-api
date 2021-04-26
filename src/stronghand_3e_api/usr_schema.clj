@@ -101,15 +101,16 @@
                              images
                              locations
                              appointment_at))
-    (GET "/list-order" []
-      :summary "Get top list of order"
+
+    (GET "/list-top-order" []
+      :summary "get all issues"
       :header-params [authorization :- s/Str]
-      (usr-orders/get-recent-order authorization))
+      (usr-orders/list-all-issues authorization))
 
     (GET "/list-all-issues" []
       :summary "get all issues"
       :header-params [authorization :- s/Str]
-      (usr-orders/list-all-issues authorization))
+      (usr-orders/get-recent-order authorization))
 
     (POST "/cancel-order" []
       :summary "Cancel order from user"

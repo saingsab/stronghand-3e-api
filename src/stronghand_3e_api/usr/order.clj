@@ -67,7 +67,6 @@
   (if (= (auth/authorized? token) true)
     (let [created-by (get (auth/token? token) :_id)]
       (try
-        (println (orders/get-order-top conn/db {:CREATED_BY created-by}))
         (ok {:message (orders/get-order-top conn/db {:CREATED_BY created-by})})
         (catch Exception ex
           (writelog/op-log! (str "ERROR : FN get-recent-order " (.getMessage ex)))
@@ -93,7 +92,7 @@
     (let [user-id (get (auth/token? token) :_id)]
       (if (or (true? (is-staff? user-id)) (= user-id (get (orders/get-order-by-id conn/db {:ID order-id}) :created_by)))
         (try
-          (println (get (orders/get-order-status conn/db {:ORDER_STATUS_DEC "Cancelled"}) :id))
+
           (orders/update-orders conn/db {:ID order-id
                                          :SOLUTIONS nil
                                          :TOTAL nil
