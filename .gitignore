@@ -1,7 +1,6 @@
+target/
 .config.edn
 .config.edn.sample
 .env
 dbs/
-target/
-target
 remote_deploy.sh
