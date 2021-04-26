@@ -136,3 +136,6 @@ SELECT * FROM ORDER_STATUS;
 -- :name get-user-level :? :1
 SELECT * FROM USER_LEVEL
 WHERE LEVEL_DEC = :LEVEL_DEC;
+
+-- :name get-all-issue :? :*
+SELECT * FROM ISSUES;

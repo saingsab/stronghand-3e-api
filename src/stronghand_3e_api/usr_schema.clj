@@ -91,14 +91,42 @@
       :summary "Provide OAuth token return JWT token"
       (login/login-from-facebook token))
 
-    (POST "/order"
+    (POST "/order" []
       :summary "Client start order technicians"
       :header-params [authorization :- s/Str]
-      :body-params [issue_id :- s/Str
-                    others :- s/Str
-                    images :- s/Str
-                    locations :- s/Str
-                    appointment_at :- s/Int]
-      (usr-orders))
+      :body-params [issue_id :- s/Str, others :- s/Str, images :- s/Str, locations :- s/Str, appointment_at :- s/Int]
+      (usr-orders/make-order authorization
+                             issue_id
+                             others
+                             images
+                             locations
+                             appointment_at))
+    (GET "/list-order" []
+      :summary "Get top list of order"
+      :header-params [authorization :- s/Str]
+      (usr-orders/get-recent-order authorization))
+
+    (GET "/list-all-issues" []
+      :summary "get all issues"
+      :header-params [authorization :- s/Str]
+      (usr-orders/list-all-issues authorization))
+
+    (POST "/cancel-order" []
+      :summary "Cancel order from user"
+      :header-params [authorization :- s/Str]
+      :body-params [order_id :- s/Str]
+      (usr-orders/cancelled? authorization order_id))
+
+    (POST "/list-order-by-status" []
+      :summary "List the other by status"
+      :header-params [authorization :- s/Str]
+      :body-params [status_id :- s/Str]
+      (usr-orders/get-order-by-status authorization status_id))
+
+    (POST "/list-order-by-date" []
+      :summary "List the order from date to date"
+      :header-params [authorization :- s/Str]
+      :body-params [from_date :- s/Str, to_date :- s/Str]
+      (usr-orders/get-order-from-date-to-date authorization from_date to_date))
     ;; []
     ))

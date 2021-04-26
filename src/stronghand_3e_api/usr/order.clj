@@ -1,6 +1,7 @@
 (ns stronghand-3e-api.usr.order
   (:require [aero.core :refer (read-config)]
             [ring.util.http-response :refer :all]
+            [clojure.string :as str]
             [stronghand-3e-api.utils.writelog :as writelog]
             [stronghand-3e-api.utils.auth :as auth]
             [stronghand-3e-api.utils.conn :as conn]
@@ -29,6 +30,17 @@
         {:error {:message "Internal server error"}}))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
+;; List All issue
+(defn list-all-issues
+  [token]
+  (if (= (auth/authorized? token) true)
+    (try
+      (ok (orders/get-all-issue conn/db))
+      (catch Exception ex
+        (writelog/op-log! (str "ERROR : FN list-all-issues  " (.getMessage ex)))
+        {:error {:message "Internal server error"}}))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
 (defn make-order
   [token issue-id others images locations appointment-at]
   (if (= (auth/authorized? token) true)
@@ -38,12 +50,12 @@
         (orders/orders conn/db {:ID @txid
                                 :ISSUE_ID issue-id
                                 :OTHERS others
-                                :IMAGES images
+                                :IMAGES (into-array (str/split images #" "))
                                 :LOCATIONS locations
                                 :TOTAL (get (issues/get-issue-by-id conn/db issue-id) :price);;need to calculate get price from issuse
                                 :APPOINTMENT_AT appointment-at
                                 :CREATED_BY created-by})
-        (ok {:message "Successfully Order"})
+        (ok {:message "Successfully Ordered" :estimate_price (get (issues/get-issue-by-id conn/db issue-id) :price)})
         (catch Exception ex
           (writelog/op-log! (str "ERROR : FN make-order " (.getMessage ex)))
           {:error {:message "Internal server error"}})))
@@ -55,7 +67,8 @@
   (if (= (auth/authorized? token) true)
     (let [created-by (get (auth/token? token) :_id)]
       (try
-        (ok (orders/get-order-top conn/db {:CREATED_BY created-by}))
+        (println (orders/get-order-top conn/db {:CREATED_BY created-by}))
+        (ok {:message (orders/get-order-top conn/db {:CREATED_BY created-by})})
         (catch Exception ex
           (writelog/op-log! (str "ERROR : FN get-recent-order " (.getMessage ex)))
           {:error {:message "Internal server error"}})))
@@ -133,7 +146,7 @@
     (let [user-id (get (auth/token? token) :_id)]
       (if (true? (is-staff? user-id))
         (try
-          (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE from-date :TO_DATE to-date}))
+          (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE (clojure.instant/read-instant-date from-date)  :TO_DATE (clojure.instant/read-instant-date to-date)}))
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN get-order-from-date-to-date " (.getMessage ex)))
             {:error {:message "Internal server error"}}))
