@@ -5,7 +5,8 @@
               [schema.core :as s]
               [stronghand-3e-api.account.register :as register]
               [stronghand-3e-api.account.activation :as activation]
-              [stronghand-3e-api.account.login :as login]))
+              [stronghand-3e-api.account.login :as login]
+              [stronghand-3e-api.usr.order :as usr-orders]))
 
 ;; (s/defschema Total
 ;;   {:total s/Int})
@@ -89,5 +90,15 @@
       :body-params [token :- s/Str]
       :summary "Provide OAuth token return JWT token"
       (login/login-from-facebook token))
+
+    (POST "/order"
+      :summary "Client start order technicians"
+      :header-params [authorization :- s/Str]
+      :body-params [issue_id :- s/Str
+                    others :- s/Str
+                    images :- s/Str
+                    locations :- s/Str
+                    appointment_at :- s/Int]
+      (usr-orders))
     ;; []
     ))

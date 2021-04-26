@@ -1,0 +1,5 @@
+(use '[stronghand-3e-api.usr.order])
+(into-array "4" "8")
+(require '[clojure.string :as str])
+(str/split "http://url1.com http://url2.com" #" ")
+(use '[stronghand-3e-api.account.login])
