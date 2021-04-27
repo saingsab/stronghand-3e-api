@@ -170,7 +170,7 @@
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
 ;; Rates technicians
-(defn ret-technician
+(defn rate-technician
   [token rate-star rate-dec rate-to]
   (if (= (auth/authorized? token) true)
     (let [created-by (get (auth/token? token) :_id)]

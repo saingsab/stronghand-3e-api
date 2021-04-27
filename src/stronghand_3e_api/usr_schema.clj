@@ -105,12 +105,12 @@
     (GET "/list-top-order" []
       :summary "get all issues"
       :header-params [authorization :- s/Str]
-      (usr-orders/list-all-issues authorization))
+      (usr-orders/get-recent-order authorization))
 
     (GET "/list-all-issues" []
       :summary "get all issues"
       :header-params [authorization :- s/Str]
-      (usr-orders/get-recent-order authorization))
+      (usr-orders/list-all-issues authorization))
 
     (POST "/cancel-order" []
       :summary "Cancel order from user"
@@ -129,5 +129,14 @@
       :header-params [authorization :- s/Str]
       :body-params [from_date :- s/Str, to_date :- s/Str]
       (usr-orders/get-order-from-date-to-date authorization from_date to_date))
+
+    (POST "/rate-technician" []
+      :summary "Rate the technical team"
+      :header-params [authorization :- s/Str]
+      :body-params [rate_star :- s/Inst, rate_dec :- s/Str, rate_to :- s/Str]
+      (usr-orders/rate-technician authorization
+                                  rate_star
+                                  rate_dec
+                                  rate_to))
     ;;
     ))
