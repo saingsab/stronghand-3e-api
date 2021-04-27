@@ -87,17 +87,17 @@
 ;; Order Cancalled
 ;; Condition Only Staff or Owner and in the placing order only
 (defn cancelled?
-  [token order-id]
+  [token order_id]
   (if (= (auth/authorized? token) true)
-    (let [user-id (get (auth/token? token) :_id)]
-      (if (or (true? (is-staff? user-id)) (= user-id (get (orders/get-order-by-id conn/db {:ID order-id}) :created_by)))
+    (let [user_id (get (auth/token? token) :_id)]
+      (if (or (true? (is-staff? user_id)) (= user_id (get (orders/get-order-by-id conn/db {:ID user_id}) :created_by)))
         (try
 
-          (orders/update-orders conn/db {:ID order-id
+          (orders/update-orders conn/db {:ID order_id
                                          :SOLUTIONS nil
                                          :TOTAL nil
                                          :ORDER_STATUS (get (orders/get-order-status conn/db {:ORDER_STATUS_DEC "Cancelled"}) :id)
-                                         :UPDATED_BY user-id})
+                                         :UPDATED_BY user_id})
           (ok {:message "Order status successfully cancelled"})
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN canncled? " (.getMessage ex)))
@@ -107,16 +107,16 @@
 
   ;; Update order status by operation or tech team only
 (defn update-order-status
-  [token order-id solutions total status-id]
+  [token order_id solutions total status_id]
   (if (= (auth/authorized? token) true)
-    (let [user-id (get (auth/token? token) :_id)]
-      (if (true? (is-staff? user-id))
+    (let [user_id (get (auth/token? token) :_id)]
+      (if (true? (is-staff? user_id))
         (try
-          (orders/update-orders conn/db {:ID order-id
+          (orders/update-orders conn/db {:ID order_id
                                          :SOLUTIONS solutions
                                          :TOTAL total
-                                         :ORDER_STATUS status-id
-                                         :UPDATED_BY user-id})
+                                         :ORDER_STATUS status_id
+                                         :UPDATED_BY user_id})
           (ok {:message "Order status successfully updated"})
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN update-order-status " (.getMessage ex)))
@@ -126,12 +126,12 @@
 
 ;;  View Order by status
 (defn get-order-by-status
-  [token status-id]
+  [token status_id]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
       (if (true? (is-staff? user-id))
         (try
-          (ok (orders/get-order-by-status conn/db {:ORDER_STATUS status-id}))
+          (ok (orders/get-order-by-status conn/db {:ORDER_STATUS status_id}))
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN get-order-by-status " (.getMessage ex)))
             {:error {:message "Internal server error"}}))
@@ -140,12 +140,14 @@
 
 ;;  View Order from date to date
 (defn get-order-from-date-to-date
-  [token from-date to-date]
+  [token from_date to_date]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
       (if (true? (is-staff? user-id))
         (try
-          (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE (clojure.instant/read-instant-date from-date)  :TO_DATE (clojure.instant/read-instant-date to-date)}))
+          ;; (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE (clojure.instant/read-instant-date from-date)  :TO_DATE (clojure.instant/read-instant-date to-date)}))
+          ;; change from convert from string by accepting date from client.
+          (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE from_date  :TO_DATE to_date}))
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN get-order-from-date-to-date " (.getMessage ex)))
             {:error {:message "Internal server error"}}))
@@ -154,13 +156,13 @@
 
 ;; Assgin Technician
 (defn assign-technicains
-  [token technicians order-status]
+  [token technicians order_status]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
       (if (true? (is-staff? user-id))
         (try
           (orders/assign-technician conn/db {:TECHNICIANS technicians
-                                             :ORDER_STATUS order-status
+                                             :ORDER_STATUS order_status
                                              :CREATED_BY user-id})
           (ok {:message "Successfully assigned technicains"})
           (catch Exception ex

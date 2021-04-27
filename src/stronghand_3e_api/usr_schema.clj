@@ -127,13 +127,13 @@
     (POST "/list-order-by-date" []
       :summary "List the order from date to date"
       :header-params [authorization :- s/Str]
-      :body-params [from_date :- s/Str, to_date :- s/Str]
+      :body-params [from_date :- s/Inst, to_date :- s/Inst]
       (usr-orders/get-order-from-date-to-date authorization from_date to_date))
 
     (POST "/rate-technician" []
       :summary "Rate the technical team"
       :header-params [authorization :- s/Str]
-      :body-params [rate_star :- s/Inst, rate_dec :- s/Str, rate_to :- s/Str]
+      :body-params [rate_star :- s/Int, rate_dec :- s/Str, rate_to :- s/Str]
       (usr-orders/rate-technician authorization
                                   rate_star
                                   rate_dec
