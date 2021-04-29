@@ -13,7 +13,7 @@
 (defn uuid [] (str (java.util.UUID/randomUUID)))
 (def txid (atom ""))
 
-(defn is-staff?
+(defn is-user?
   [id]
   (if (not= id (get (orders/get-user-level conn/db {:LEVEL_DEC "User"}) :id))
     true
@@ -90,7 +90,7 @@
   [token order_id]
   (if (= (auth/authorized? token) true)
     (let [user_id (get (auth/token? token) :_id)]
-      (if (or (true? (is-staff? user_id)) (= user_id (get (orders/get-order-by-id conn/db {:ID user_id}) :created_by)))
+      (if (or (true? (is-user? user_id)) (= user_id (get (orders/get-order-by-id conn/db {:ID user_id}) :created_by)))
         (try
 
           (orders/update-orders conn/db {:ID order_id
@@ -110,7 +110,7 @@
   [token order_id solutions total status_id]
   (if (= (auth/authorized? token) true)
     (let [user_id (get (auth/token? token) :_id)]
-      (if (true? (is-staff? user_id))
+      (if (true? (is-user? user_id))
         (try
           (orders/update-orders conn/db {:ID order_id
                                          :SOLUTIONS solutions
@@ -129,7 +129,7 @@
   [token status_id]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
-      (if (true? (is-staff? user-id))
+      (if (true? (is-user? user-id))
         (try
           (ok (orders/get-order-by-status conn/db {:ORDER_STATUS status_id}))
           (catch Exception ex
@@ -143,7 +143,7 @@
   [token from_date to_date]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
-      (if (true? (is-staff? user-id))
+      (if (true? (is-user? user-id))
         (try
           ;; (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE (clojure.instant/read-instant-date from-date)  :TO_DATE (clojure.instant/read-instant-date to-date)}))
           ;; change from convert from string by accepting date from client.
@@ -159,7 +159,7 @@
   [token technicians order_status]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
-      (if (true? (is-staff? user-id))
+      (if (true? (is-user? user-id))
         (try
           (orders/assign-technician conn/db {:TECHNICIANS technicians
                                              :ORDER_STATUS order_status

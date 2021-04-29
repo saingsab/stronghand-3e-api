@@ -2,6 +2,7 @@
   (:require [aero.core :refer (read-config)]
             [ring.util.http-response :refer :all]
             [stronghand-3e-api.utils.writelog :as writelog]
+            [clojure.string :as str]
             [stronghand-3e-api.utils.auth :as auth]
             [stronghand-3e-api.utils.conn :as conn]
             [stronghand-3e-api.db.sp-orders :as orders]
@@ -14,7 +15,7 @@
 
 (defn is-staff?
   [id]
-  (if (not= id (get (orders/get-user-level conn/db {:LEVEL_DEC "User"}) :id))
+  (if (not= (get (orders/get-users-by-id conn/db {:ID id}) :user_level_id)  (get (orders/get-user-level conn/db {:LEVEL_DEC "User"}) :id))
     true
     false))
 
@@ -29,36 +30,40 @@
         {:error {:message "Internal server error"}}))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
-(defn make-order
-  [token issue-id others images locations appointment-at]
-  (if (= (auth/authorized? token) true)
-    (let [created-by (get (auth/token? token) :_id)]
-      (try
-        (reset! txid (java.util.UUID/randomUUID))
-        (orders/orders conn/db {:ID @txid
-                                :ISSUE_ID issue-id
-                                :OTHERS others
-                                :IMAGES images
-                                :LOCATIONS locations
-                                :TOTAL (get (issues/get-issue-by-id conn/db issue-id) :price);;need to calculate get price from issuse
-                                :APPOINTMENT_AT appointment-at
-                                :CREATED_BY created-by})
-        (ok {:message "Successfully Order"})
-        (catch Exception ex
-          (writelog/op-log! (str "ERROR : FN make-order " (.getMessage ex)))
-          {:error {:message "Internal server error"}})))
-    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+;; May be enable back for ordering for user
+;; (defn make-order
+;;   [token issue-id others images locations appointment-at]
+;;   (if (= (auth/authorized? token) true)
+;;     (let [created-by (get (auth/token? token) :_id)]
+;;       (try
+;;         (reset! txid (java.util.UUID/randomUUID))
+;;         (orders/orders conn/db {:ID @txid
+;;                                 :ISSUE_ID issue-id
+;;                                 :OTHERS others
+;;                                 :IMAGES images
+;;                                 :LOCATIONS locations
+;;                                 :TOTAL (get (issues/get-issue-by-id conn/db issue-id) :price);;need to calculate get price from issuse
+;;                                 :APPOINTMENT_AT appointment-at
+;;                                 :CREATED_BY created-by})
+;;         (ok {:message "Successfully Order"})
+;;         (catch Exception ex
+;;           (writelog/op-log! (str "ERROR : FN make-order " (.getMessage ex)))
+;;           {:error {:message "Internal server error"}})))
+;;     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
-;; Select top 10 of recent order. 
+;; Select top 10 of recent order by staff. 
 (defn get-recent-order
   [token]
   (if (= (auth/authorized? token) true)
-    (let [created-by (get (auth/token? token) :_id)]
-      (try
-        (ok (orders/get-order-top conn/db {:CREATED_BY created-by}))
-        (catch Exception ex
-          (writelog/op-log! (str "ERROR : FN get-recent-order " (.getMessage ex)))
-          {:error {:message "Internal server error"}})))
+    (let [user_id (get (auth/token? token) :_id)]
+      ;; If user is a staff
+      (if (true? (is-staff? user_id))
+        (try
+          (ok (orders/op-get-order-top conn/db))
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN get-recent-order " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
 ;; Get specific order by ID
@@ -142,14 +147,15 @@
 
 ;; Assgin Technician
 (defn assign-technicains
-  [token technicians order-status]
+  [token order_id technicians order_status]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
       (if (true? (is-staff? user-id))
         (try
-          (orders/assign-technician conn/db {:TECHNICIANS technicians
-                                             :ORDER_STATUS order-status
-                                             :CREATED_BY user-id})
+          (orders/assign-technician conn/db {:ID order_id
+                                             :TECHNICIANS  (into-array (str/split technicians #" "))
+                                             :ORDER_STATUS order_status
+                                             :UPDATED_BY user-id})
           (ok {:message "Successfully assigned technicains"})
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN get-order-from-date-to-date " (.getMessage ex)))

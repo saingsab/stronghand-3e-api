@@ -57,3 +57,19 @@ ERROR : FN make-order Wrong number of args (1) passed to: clojure.string/split A
 ERROR : FN make-order Wrong number of args (1) passed to: clojure.string/split At: 2021-04-27T00:47:11.936+07:00
 ERROR : FN make-order Wrong number of args (1) passed to: clojure.string/split At: 2021-04-27T00:47:13.665+07:00
 ERROR : FN make-order Wrong number of args (1) passed to: clojure.string/split At: 2021-04-27T00:47:55.013+07:00
+ERROR : FN get-recent-order ERROR: syntax error at or near "LIMIT"
+  Position: 2 At: 2021-04-29T21:06:15.962+07:00
+ERROR : FN get-recent-order ERROR: syntax error at or near "LIMIT"
+  Position: 2 At: 2021-04-29T21:22:42.042+07:00
+ERROR : FN get-recent-order ERROR: syntax error at or near "LIMIT"
+  Position: 2 At: 2021-04-29T21:40:14.806+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:01:22.898+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:28:53.610+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:29:55.293+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:30:34.204+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:33:17.000+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:34:43.566+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:42:09.901+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:43:09.858+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:46:21.085+07:00
+ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:46:46.952+07:00

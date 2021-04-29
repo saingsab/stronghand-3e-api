@@ -14,6 +14,10 @@ WHERE PHONENUMBER = :PHONENUMBER;
 SELECT * FROM USERS 
 WHERE EMAIL = :EMAIL;
 
+-- :name get-users-by-id :? :1
+SELECT * FROM USERS
+WHERE ID = :ID;
+
 -- :name get-all-users-by-id :? :1
 SELECT * FROM USERS 
 WHERE ID = :ID;

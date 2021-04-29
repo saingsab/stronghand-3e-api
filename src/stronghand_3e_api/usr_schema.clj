@@ -138,5 +138,10 @@
                                   rate_star
                                   rate_dec
                                   rate_to))
+
+    (GET "/list-order-status" []
+      :summary "List the order status"
+      :header-params [authorization :- s/Str]
+      (usr-orders/list-order-status authorization))
     ;;
     ))

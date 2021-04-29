@@ -47,12 +47,33 @@ ON o.ORDER_STATUS = os.ID
 WHERE o.CREATED_BY = :CREATED_BY
 ORDER BY o.CREATED_AT ASC
 LIMIT 10;
+ 
+-- :name op-get-order-top :? :*
+-- :doc this is for staff only. 
+SELECT  o.ID, 
+        i.ISSUES_NAME,
+        o.OTHERS, 
+        CAST(o.IMAGES AS VARCHAR), 
+        o.LOCATIONS, 
+        o.TOTAL, 
+        os.ORDER_STATUS_DEC, 
+        o.APPOINTMENT_AT, 
+        o.SOLUTIONS, 
+        o.TECHNICIANS, 
+        o.CREATED_AT
+FROM ORDERS as o
+INNER JOIN ISSUES AS i
+ON o.ISSUE_ID = i.ID
+INNER JOIN ORDER_STATUS AS os
+ON o.ORDER_STATUS = os.ID
+ORDER BY o.CREATED_AT ASC
+LIMIT 10;
 
 -- :name get-order-by-id :? :1
 SELECT  o.ID, 
         i.ISSUES_NAME, 
         o.OTHERS, 
-        o.IMAGES, 
+        CAST(o.IMAGES AS VARCHAR), 
         o.LOCATIONS, 
         o.TOTAL, 
         os.ORDER_STATUS_DEC, 
@@ -72,7 +93,7 @@ ORDER BY o.CREATED_AT ASC;
 SELECT  o.ID, 
         i.ISSUES_NAME, 
         o.OTHERS, 
-        o.IMAGES, 
+        CAST(o.IMAGES AS VARCHAR), 
         o.LOCATIONS, 
         o.TOTAL, 
         os.ORDER_STATUS_DEC, 
@@ -92,7 +113,7 @@ ORDER BY o.CREATED_AT ASC;
 SELECT  o.ID, 
         i.ISSUES_NAME, 
         o.OTHERS, 
-        o.IMAGES, 
+        CAST(o.IMAGES AS VARCHAR), 
         o.LOCATIONS, 
         o.TOTAL, 
         os.ORDER_STATUS_DEC, 
@@ -139,3 +160,7 @@ WHERE LEVEL_DEC = :LEVEL_DEC;
 
 -- :name get-all-issue :? :*
 SELECT * FROM ISSUES;
+
+-- :name get-users-by-id :? :1
+SELECT * FROM USERS
+WHERE ID = :ID;
