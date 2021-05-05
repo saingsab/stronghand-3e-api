@@ -73,3 +73,7 @@ ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter
 ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:43:09.858+07:00
 ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:46:21.085+07:00
 ERROR : FN get-order-from-date-to-date Parameter Mismatch: :UPDATED_BY parameter data not found. At: 2021-04-30T00:46:46.952+07:00
+ERROR : FN get-technicain-by-name ERROR: syntax error at or near "FROM"
+  Position: 109 At: 2021-05-05T23:40:54.748+07:00
+ERROR : FN get-technicain-by-phone ERROR: syntax error at or near "FROM"
+  Position: 109 At: 2021-05-05T23:41:50.712+07:00

@@ -6,6 +6,7 @@
             [stronghand-3e-api.utils.auth :as auth]
             [stronghand-3e-api.utils.conn :as conn]
             [stronghand-3e-api.db.sp-orders :as orders]
+            [stronghand-3e-api.db.sp-users :as users]
             [stronghand-3e-api.db.sp-issues :as issues]
             [stronghand-3e-api.db.sp-rates :as rates]))
 
@@ -159,6 +160,48 @@
           (ok {:message "Successfully assigned technicains"})
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN get-order-from-date-to-date " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;; Get technician by name start with 3 charactor
+(defn get-technicain-by-name
+  [token name]
+  (if (= (auth/authorized? token) true)
+    (let [user-id (get (auth/token? token) :_id)]
+      (if (true? (is-staff? user-id))
+        (try
+          (ok (users/find-user-by-name conn/db {:FIRST_NAME (str name "%")}))
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN get-technicain-by-name " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;; Get technician by email
+(defn get-technicain-by-email
+  [token email]
+  (if (= (auth/authorized? token) true)
+    (let [user-id (get (auth/token? token) :_id)]
+      (if (true? (is-staff? user-id))
+        (try
+          (ok (users/find-user-by-email conn/db {:EMAIL email}))
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN get-technicain-by-name " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Unauthorized operation not permitted"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;; Get technician by email
+(defn get-technicain-by-phone
+  [token phnom_number]
+  (if (= (auth/authorized? token) true)
+    (let [user-id (get (auth/token? token) :_id)]
+      (if (true? (is-staff? user-id))
+        (try
+          (ok (users/find-user-by-phone conn/db {:PHONENUMBER phnom_number}))
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN get-technicain-by-phone " (.getMessage ex)))
             {:error {:message "Internal server error"}}))
         (ok {:error {:message "Unauthorized operation not permitted"}})))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
