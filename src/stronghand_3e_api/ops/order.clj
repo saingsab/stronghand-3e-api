@@ -165,7 +165,7 @@
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
 ;; Get technician by name start with 3 charactor
-(defn get-technicain-by-name
+(defn get-technician-by-name
   [token name]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
@@ -179,7 +179,7 @@
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
 ;; Get technician by email
-(defn get-technicain-by-email
+(defn get-technician-by-email
   [token email]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
@@ -193,7 +193,7 @@
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
 ;; Get technician by email
-(defn get-technicain-by-phone
+(defn get-technician-by-phone
   [token phnom_number]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
