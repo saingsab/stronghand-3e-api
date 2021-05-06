@@ -24,18 +24,18 @@
       :summary "Input first 3 latter of technicain name to get list of tech guys"
       :header-params [authorization :- s/Str]
       :body-params [name :- s/Str]
-      (ops-orders/get-technicain-by-name authorization name))
+      (ops-orders/get-technician-by-name authorization name))
 
     (POST "/get-technician-by-email" []
       :summary "Input input of technicain email to get list of tech guys"
       :header-params [authorization :- s/Str]
       :body-params [email :- s/Str]
-      (ops-orders/get-technicain-by-email authorization email))
+      (ops-orders/get-technician-by-email authorization email))
 
     (POST "/get-technician-by-phone" []
       :summary "Input phone number of technicain to get list of tech guys"
       :header-params [authorization :- s/Str]
       :body-params [phone :- s/Str]
-      (ops-orders/get-technicain-by-phone authorization phone))
+      (ops-orders/get-technician-by-phone authorization phone))
     ;; Enter new line
     ))
