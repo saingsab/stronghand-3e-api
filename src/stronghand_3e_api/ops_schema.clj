@@ -3,7 +3,8 @@
               [ring.util.http-response :refer [ok]]
               [schema.core :as s]
               ;; [stronghand-3e-api.account.login :as login]
-              [stronghand-3e-api.ops.order :as ops-orders]))
+              [stronghand-3e-api.ops.order :as ops-orders]
+              [stronghand-3e-api.ops.staff :as staff]))
 
 (def routes
   (context "/ops" []
@@ -65,5 +66,33 @@
                                           solutions
                                           total
                                           status_id))
+
+    (GET "/get-dept" []
+      :summary "List all departments"
+      :header-params [authorization :- s/Str]
+      (staff/get-dept authorization))
+
+    (GET "/get-all-user" []
+      :summary "List all departments"
+      :header-params [authorization :- s/Str]
+      (staff/get-all-user authorization))
+
+    (POST "/get-user-by-dept" []
+      :summary "Provide the dept id to get users"
+      :header-params [authorization :- s/Str]
+      :body-params [dept_id :- s/Str]
+      (staff/get-user-by-dept authorization dept_id))
+
+    (POST "/update-user-level" []
+      :summary "Provission user to be a staff"
+      :header-params [authorization :- s/Str]
+      :body-params [staff_id :- s/Str, dept_id :- s/Str]
+      (staff/update-user-level authorization staff_id dept_id))
+
+    (POST "/update-user-status" []
+      :summary "Provission user to be a staff"
+      :header-params [authorization :- s/Str]
+      :body-params [user_id :- s/Str, status_id :- s/Str]
+      (staff/update-user-status authorization user_id status_id))
     ;; Enter new line
     ))
