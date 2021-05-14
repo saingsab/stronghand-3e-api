@@ -31,13 +31,13 @@ WHERE ID = :ID;
 SELECT  o.ID, 
         i.ISSUES_NAME,
         o.OTHERS, 
-        o.IMAGES, 
+        CAST(o.IMAGES AS VARCHAR), 
         o.LOCATIONS, 
         o.TOTAL, 
         os.ORDER_STATUS_DEC, 
         o.APPOINTMENT_AT, 
         o.SOLUTIONS, 
-        o.TECHNICIANS, 
+        CAST(o.TECHNICIANS AS VARCHAR), 
         o.CREATED_AT
 FROM ORDERS as o
 INNER JOIN ISSUES AS i
@@ -59,7 +59,7 @@ SELECT  o.ID,
         os.ORDER_STATUS_DEC, 
         o.APPOINTMENT_AT, 
         o.SOLUTIONS, 
-        o.TECHNICIANS, 
+        CAST(o.TECHNICIANS AS VARCHAR), 
         o.CREATED_AT
 FROM ORDERS as o
 INNER JOIN ISSUES AS i
@@ -79,7 +79,7 @@ SELECT  o.ID,
         os.ORDER_STATUS_DEC, 
         o.APPOINTMENT_AT, 
         o.SOLUTIONS, 
-        o.TECHNICIANS, 
+        CAST(o.TECHNICIANS AS VARCHAR), 
         o.CREATED_AT
 FROM ORDERS as o
 INNER JOIN ISSUES AS i
@@ -99,7 +99,7 @@ SELECT  o.ID,
         os.ORDER_STATUS_DEC, 
         o.APPOINTMENT_AT, 
         o.SOLUTIONS, 
-        o.TECHNICIANS, 
+        CAST(o.TECHNICIANS AS VARCHAR),
         o.CREATED_AT
 FROM ORDERS as o
 INNER JOIN ISSUES AS i
@@ -119,7 +119,7 @@ SELECT  o.ID,
         os.ORDER_STATUS_DEC, 
         o.APPOINTMENT_AT, 
         o.SOLUTIONS, 
-        o.TECHNICIANS, 
+        CAST(o.TECHNICIANS AS VARCHAR), 
         o.CREATED_AT
 FROM ORDERS as o
 INNER JOIN ISSUES AS i
@@ -127,6 +127,30 @@ ON o.ISSUE_ID = i.ID
 INNER JOIN ORDER_STATUS AS os
 ON o.ORDER_STATUS = os.ID
 WHERE o.CREATED_AT  BETWEEN :FROM_DATE AND :TO_DATE;
+
+-- :name get-order-by-technician :? :*
+SELECT  o.ID, 
+        i.ISSUES_NAME, 
+        o.OTHERS, 
+        CAST(o.IMAGES AS VARCHAR), 
+        o.LOCATIONS, 
+        o.TOTAL, 
+        os.ORDER_STATUS_DEC, 
+        o.APPOINTMENT_AT, 
+        o.SOLUTIONS,
+        CAST(o.TECHNICIANS AS VARCHAR),  
+        o.CREATED_AT
+FROM ORDERS as o
+INNER JOIN ISSUES AS i
+ON o.ISSUE_ID = i.ID
+INNER JOIN ORDER_STATUS AS os
+ON o.ORDER_STATUS = os.ID
+WHERE   o.TECHNICIANS[1] = :TECHNICIANS OR
+        o.TECHNICIANS[2] = :TECHNICIANS OR
+        o.TECHNICIANS[3] = :TECHNICIANS OR
+        o.TECHNICIANS[4] = :TECHNICIANS OR
+        o.TECHNICIANS[5] = :TECHNICIANS
+ORDER BY o.CREATED_AT ASC;
 
 -- :name update-orders :! :n
 -- :doc Update order status
