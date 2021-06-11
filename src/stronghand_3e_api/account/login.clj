@@ -13,6 +13,7 @@
             [clj-time.core :as time]
             [stronghand-3e-api.utils.mailling :as mailling]
             [ring.util.http-response :refer :all]
+            [stronghand-3e-api.utils.sms :as sms]
             [stronghand-3e-api.utils.writelog :as writelog]))
 
 (def env (read-config ".config.edn"))
@@ -191,7 +192,8 @@
     ; Create Temp code
       (users/update-temp conn/db {:PHONENUMBER phone :TEMP_TOKEN @pin-code})
    ; Sending temp code code.
-      (client/post (str (get env :smsendpoint)) {:form-params {:smscontent (str "Your Selendra reset code is:" @pin-code) :phonenumber phone} :content-type :json})
+   ;; (client/post (str (get env :smsendpoint)) {:form-params {:smscontent (str "Your Selendra reset code is:" @pin-code) :phonenumber phone} :content-type :json})
+      (sms/send-sms (str "Your STRONGHAND 3E reset code is:" @pin-code) phone)
       (reset! pin-code (genpin/getpin))
       (ok {:message "We have sent you reset code please check your SMS!"})
       (catch Exception ex

@@ -77,3 +77,4 @@ ERROR : FN get-technicain-by-name ERROR: syntax error at or near "FROM"
   Position: 109 At: 2021-05-05T23:40:54.748+07:00
 ERROR : FN get-technicain-by-phone ERROR: syntax error at or near "FROM"
   Position: 109 At: 2021-05-05T23:41:50.712+07:00
+ERROR : no protocol:  At: 2021-06-11T15:13:07.495+07:00

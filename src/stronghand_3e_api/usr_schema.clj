@@ -6,7 +6,8 @@
               [stronghand-3e-api.account.register :as register]
               [stronghand-3e-api.account.activation :as activation]
               [stronghand-3e-api.account.login :as login]
-              [stronghand-3e-api.usr.order :as usr-orders]))
+              [stronghand-3e-api.usr.order :as usr-orders]
+              [stronghand-3e-api.account.userinfor :as userinfor]))
 
 ;; (s/defschema Total
 ;;   {:total s/Int})
@@ -90,6 +91,22 @@
       :body-params [token :- s/Str]
       :summary "Provide OAuth token return JWT token"
       (login/login-from-facebook token))
+
+    (POST "/setup-profile" []
+      :summary "Setting up user profile"
+      :header-params [authorization :- s/Str]
+      :body-params [first_name :- s/Str, mid_name :- s/Str, last_name :- s/Str, gender :- s/Str, image_uri :- s/Str, address :- s/Str]
+      (userinfor/setup-profile! authorization
+                                first_name
+                                mid_name
+                                last_name
+                                gender
+                                image_uri
+                                address))
+    (GET "/user-profile" []
+      :summary "get user profile"
+      :header-params [authorization :- s/Str]
+      (userinfor/get-user-profile authorization))
 
     (POST "/order" []
       :summary "Client start order technicians"
