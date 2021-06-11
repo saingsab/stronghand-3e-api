@@ -6,3 +6,4 @@ logs/tx.log
 .env
 dbs/
 remote_deploy.sh
+.lein-repl-history
