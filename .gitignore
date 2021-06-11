@@ -1,5 +1,6 @@
 target/
-logs/
+logs/op.log
+logs/tx.log
 .config.edn
 .config.edn.sample
 .env
