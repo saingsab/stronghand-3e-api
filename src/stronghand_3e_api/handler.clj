@@ -19,5 +19,7 @@
    opssc/routes))
 
 (def handler
-  (wrap-cors app :access-control-allow-origin [#".*"]
+  (wrap-cors app
+             :access-control-allow-origin [#".*"]
+             :strict-origin-when-cross-origin [#".*"]
              :access-control-allow-methods [:get :post]))
