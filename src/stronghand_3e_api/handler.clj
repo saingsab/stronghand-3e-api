@@ -1,6 +1,7 @@
 (ns stronghand-3e-api.handler
   (:require [compojure.api.sweet :refer :all]
             ;;[ring.util.http-response :refer :all]
+            [ring.middleware.cors :refer [wrap-cors]]
             [stronghand-3e-api.usr-schema :as usrsc]
             [stronghand-3e-api.ops-schema :as opssc]))
 
@@ -16,3 +17,7 @@
                              :url "https://www.stronghand3e.com"}}}}}
    usrsc/routes
    opssc/routes))
+
+(def handler
+  (wrap-cors app :access-control-allow-origin [#".*"]
+             :access-control-allow-methods [:get :post]))
