@@ -16,7 +16,9 @@
                   ;; Http Client
                   [clj-http "3.12.0"]
                   ;Logging
-                  [org.clojure/tools.logging "1.1.0"]]
+                  [org.clojure/tools.logging "1.1.0"]
+                  ;CORSE 
+                  [ring-cors "0.1.13"]]
    :ring {:handler stronghand-3e-api.handler/app}
    :uberjar-name "server.jar"
    :profiles {:dev {:dependencies [[javax.servlet/javax.servlet-api "3.1.0"]]
