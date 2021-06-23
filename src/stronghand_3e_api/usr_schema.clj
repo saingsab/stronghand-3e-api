@@ -173,7 +173,7 @@
       (if (= (auth/authorized? authorization) true)
         (try
           (ds/copy (file :tempfile) (ds/file-str (str "img_db/" (get (dissoc file :tempfile) :filename))))
-          (ok {:message (str "https://imagebank.stronghand3e.com/" (get (dissoc file :tempfile) :filename))})
+          (ok {:url (str "https://imagebank.stronghand3e.com/" (get (dissoc file :tempfile) :filename))})
 
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN Upload  " (.getMessage ex)))
