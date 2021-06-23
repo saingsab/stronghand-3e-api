@@ -5,5 +5,6 @@ logs/tx.log
 .config.edn.sample
 .env
 dbs/
+img_db/
 remote_deploy.sh
 .lein-repl-history

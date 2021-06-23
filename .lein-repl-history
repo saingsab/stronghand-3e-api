@@ -53,3 +53,11 @@
 (get-all-user "Bearer eyJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhMTlhNGZjNi05N2U3LTRmMzgtOGVmMS1jYmQ2NTQyNDVjMWIiLCJleHAiOjE2MjEwNjgwNDF9.UxOPLyrJ9gZqWHuURhhHwcQGJwOGnUdbK5BnfriEF0M")
 (use '[stronghand-3e-api.ops.staff])
 (update-user-level "Bearer eyJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhMTlhNGZjNi05N2U3LTRmMzgtOGVmMS1jYmQ2NTQyNDVjMWIiLCJleHAiOjE2MjEwNjgwNDF9.UxOPLyrJ9gZqWHuURhhHwcQGJwOGnUdbK5BnfriEF0M" "64042851-e31c-4c7c-a32e-c13d9a5ab5b7" "8fd6d854-4046-4242-ac01-9b820c2b513d")
+(defn render [t]
+      (apply str t))
+(render)
+(render "d")
+(render "")
+(def a (dissoc {:a 1 :b 2 :c 3}))
+a
+(get a :a)

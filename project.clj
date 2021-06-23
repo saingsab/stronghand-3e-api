@@ -1,6 +1,7 @@
  (defproject stronghand-3e-api "0.1.0-SNAPSHOT"
    :description "STRONGHAND 3E: CORE BACKEND"
    :dependencies [[org.clojure/clojure "1.10.0"]
+                  [org.clojure/clojure-contrib "1.2.0"]
                   [metosin/compojure-api "2.0.0-alpha30"]
                   [metosin/ring-swagger-ui "3.20.1"]
                   ; ENV

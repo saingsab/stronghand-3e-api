@@ -5,6 +5,16 @@ networks:
   internal:
     external: false
 services:
+  imgsrv:
+    image: nginx:latest
+    container_name: imgsrv
+    restart: unless-stopped
+    ports:
+      - 8089:80
+    volumes:
+      - ./img_db:/usr/share/nginx/html
+    networks:
+      - web
   db:
     image: postgres
     restart: always

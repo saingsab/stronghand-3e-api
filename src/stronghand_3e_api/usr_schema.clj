@@ -3,11 +3,16 @@
               [ring.util.http-response :refer [ok]]
               [ring.util.response :refer [redirect]]
               [schema.core :as s]
+              [stronghand-3e-api.utils.writelog :as writelog]
+              [stronghand-3e-api.utils.auth :as auth]
               [stronghand-3e-api.account.register :as register]
               [stronghand-3e-api.account.activation :as activation]
               [stronghand-3e-api.account.login :as login]
               [stronghand-3e-api.usr.order :as usr-orders]
-              [stronghand-3e-api.account.userinfor :as userinfor]))
+              [stronghand-3e-api.account.userinfor :as userinfor]
+              ;; Uploading File
+              [compojure.api.upload :as upload]
+              [clojure.contrib.duck-streams :as ds]))
 
 ;; (s/defschema Total
 ;;   {:total s/Int})
@@ -160,5 +165,19 @@
       :summary "List the order status"
       :header-params [authorization :- s/Str]
       (usr-orders/list-order-status authorization))
+
+    (POST "/upload" []
+      :multipart-params [file :- upload/TempFileUpload]
+      :middleware [upload/wrap-multipart-params]
+      :header-params [authorization :- s/Str]
+      (if (= (auth/authorized? authorization) true)
+        (try
+          (ds/copy (file :tempfile) (ds/file-str (str "img_db/" (get (dissoc file :tempfile) :filename))))
+          (ok {:message (str "https://imagebank.stronghand3e.com/" (get (dissoc file :tempfile) :filename))})
+
+          (catch Exception ex
+            (writelog/op-log! (str "ERROR : FN Upload  " (.getMessage ex)))
+            {:error {:message "Internal server error"}}))
+        (ok {:error {:message "Something went wrong at our end"}})))
     ;;
     ))
