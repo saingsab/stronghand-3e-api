@@ -89,7 +89,7 @@ ON o.ORDER_STATUS = os.ID
 WHERE o.ID = :ID
 ORDER BY o.CREATED_AT ASC;
 
--- :name get-order-by-status :? :1
+-- :name get-order-by-status :? :*
 SELECT  o.ID, 
         i.ISSUES_NAME, 
         o.OTHERS, 
