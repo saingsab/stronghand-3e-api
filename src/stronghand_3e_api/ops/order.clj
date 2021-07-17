@@ -3,6 +3,8 @@
             [ring.util.http-response :refer :all]
             [stronghand-3e-api.utils.writelog :as writelog]
             [clojure.string :as str]
+            (clj-time [core :as time] [coerce :as tc])
+            [clojure.instant :as instant]
             [stronghand-3e-api.utils.auth :as auth]
             [stronghand-3e-api.utils.conn :as conn]
             [stronghand-3e-api.db.sp-orders :as orders]
@@ -133,7 +135,8 @@
     (let [user_id (get (auth/token? token) :_id)]
       (if (true? (is-staff? user_id))
         (try
-          (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE from_date :TO_DATE to_date}))
+          (ok (orders/get-order-from-date-to-date conn/db {:FROM_DATE (tc/to-sql-time from_date)
+                                                           :TO_DATE (tc/to-sql-time to_date)}))
           (catch Exception ex
             (writelog/op-log! (str "ERROR : FN get-order-from-date-to-date " (.getMessage ex)))
             {:error {:message "Internal server error"}}))

@@ -78,3 +78,15 @@ ERROR : FN get-technicain-by-name ERROR: syntax error at or near "FROM"
 ERROR : FN get-technicain-by-phone ERROR: syntax error at or near "FROM"
   Position: 109 At: 2021-05-05T23:41:50.712+07:00
 ERROR : no protocol:  At: 2021-06-11T15:13:07.495+07:00
+ERROR : FN get-order-from-date-to-date class java.util.Date cannot be cast to class java.lang.CharSequence (java.util.Date and java.lang.CharSequence are in module java.base of loader 'bootstrap') At: 2021-07-16T10:49:57.885+07:00
+ERROR : FN get-order-from-date-to-date class java.util.Date cannot be cast to class java.lang.CharSequence (java.util.Date and java.lang.CharSequence are in module java.base of loader 'bootstrap') At: 2021-07-16T10:55:11.383+07:00
+ERROR : FN get-order-from-date-to-date class java.util.Date cannot be cast to class java.lang.CharSequence (java.util.Date and java.lang.CharSequence are in module java.base of loader 'bootstrap') At: 2021-07-17T10:39:11.313+07:00
+ERROR : FN get-order-from-date-to-date class java.util.Date cannot be cast to class java.lang.CharSequence (java.util.Date and java.lang.CharSequence are in module java.base of loader 'bootstrap') At: 2021-07-17T10:39:33.191+07:00
+ERROR : FN get-order-from-date-to-date class java.util.Date cannot be cast to class java.lang.CharSequence (java.util.Date and java.lang.CharSequence are in module java.base of loader 'bootstrap') At: 2021-07-17T10:39:39.130+07:00
+ERROR : FN get-order-from-date-to-date class java.util.Date cannot be cast to class java.lang.CharSequence (java.util.Date and java.lang.CharSequence are in module java.base of loader 'bootstrap') At: 2021-07-17T10:40:56.200+07:00
+ERROR : FN get-order-from-date-to-date class java.util.Date cannot be cast to class java.lang.CharSequence (java.util.Date and java.lang.CharSequence are in module java.base of loader 'bootstrap') At: 2021-07-17T10:43:40.542+07:00
+ERROR : FN get-order-from-date-to-date class java.util.Date cannot be cast to class java.lang.CharSequence (java.util.Date and java.lang.CharSequence are in module java.base of loader 'bootstrap') At: 2021-07-17T10:44:07.961+07:00
+ERROR : FN get-order-from-date-to-date Can't infer the SQL type to use for an instance of java.util.Date. Use setObject() with an explicit Types value to specify the type to use. At: 2021-07-17T11:20:46.084+07:00
+ERROR : FN get-order-from-date-to-date Can't infer the SQL type to use for an instance of java.util.Date. Use setObject() with an explicit Types value to specify the type to use. At: 2021-07-17T11:22:09.930+07:00
+ERROR : FN get-order-from-date-to-date Wrong number of args (2) passed to: clojure.instant/read-instant-date At: 2021-07-17T11:24:15.202+07:00
+ERROR : FN get-order-from-date-to-date Cannot format given Object as a Date At: 2021-07-17T11:42:29.786+07:00
