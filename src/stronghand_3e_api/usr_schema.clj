@@ -43,7 +43,7 @@
         (ok {:message "User successfully activated"})
         (ok {:error {:message "User failed activation"}})))
 
-    (POST "/forget-password-phone" []
+    (POST "/forget-password-by-phone" []
       :summary "Input User phone number to received reseting code"
       :body-params [phone :- s/Str]
       (login/forget-password phone))
