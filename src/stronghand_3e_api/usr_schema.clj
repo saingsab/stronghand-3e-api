@@ -14,8 +14,6 @@
               [compojure.api.upload :as upload]
               [clojure.contrib.duck-streams :as ds]))
 
-;; (s/defschema Total
-;;   {:total s/Int})
 
 (def routes
   (context "/usr" []
@@ -181,3 +179,4 @@
         (ok {:error {:message "Something went wrong at our end"}})))
     ;;
     ))
+

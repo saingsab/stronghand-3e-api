@@ -1,7 +1,8 @@
 (ns stronghand-3e-api.handler
   (:require [compojure.api.sweet :refer :all]
             ;;[ring.util.http-response :refer :all]
-            [ring.middleware.cors :refer [wrap-cors]]
+            ;; [ring.middleware.cors :refer [wrap-cors]]
+            [jumblerg.middleware.cors :refer [wrap-cors]]
             [stronghand-3e-api.usr-schema :as usrsc]
             [stronghand-3e-api.ops-schema :as opssc]))
 
@@ -15,11 +16,19 @@
                    :contact {:name "Officail Website"
                              :email "saing.sab@gmail.com"
                              :url "https://www.stronghand3e.com"}}}}}
+
+;;   ;; accept everything
+;; (wrap-cors routes #".*")
+;; (wrap-cors routes identity)
+
+;; ;; accept some things [todo on production]
+;; (wrap-cors routes #".*localhost.*" #".*mydomain.org$")
+;; (wrap-cors routes #(= (:allowed-origin db) %))
+
+;; Accept Everthing during dev
+   (wrap-cors usrsc/routes #".*")
+   (wrap-cors usrsc/routes identity)
+   (wrap-cors opssc/routes #".*")
+   (wrap-cors opssc/routes identity)
    usrsc/routes
    opssc/routes))
-
-(def handler
-  (wrap-cors app
-             :access-control-allow-origin [#".*"]
-             :strict-origin-when-cross-origin [#".*"]
-             :access-control-allow-methods [:get :post]))

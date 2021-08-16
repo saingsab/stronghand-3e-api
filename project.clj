@@ -19,7 +19,7 @@
                   ;Logging
                   [org.clojure/tools.logging "1.1.0"]
                   ;CORSE 
-                  [ring-cors "0.1.13"]]
+                  [jumblerg/ring-cors "2.0.0"]]
    :ring {:handler stronghand-3e-api.handler/app}
    :uberjar-name "server.jar"
    :profiles {:dev {:dependencies [[javax.servlet/javax.servlet-api "3.1.0"]]
