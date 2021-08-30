@@ -4,7 +4,13 @@
             ;; [ring.middleware.cors :refer [wrap-cors]]
             [jumblerg.middleware.cors :refer [wrap-cors]]
             [stronghand-3e-api.usr-schema :as usrsc]
-            [stronghand-3e-api.ops-schema :as opssc]))
+            ;; [stronghand-3e-api.ops-schema :as opssc]
+            ))
+
+;; (defn routers []
+;;    usrsc/routes
+;;    opssc/routes
+;; )
 
 (def app
   (api
@@ -26,9 +32,7 @@
 ;; (wrap-cors routes #(= (:allowed-origin db) %))
 
 ;; Accept Everthing during dev
-   (wrap-cors usrsc/routes #".*")
-   (wrap-cors usrsc/routes identity)
-   (wrap-cors opssc/routes #".*")
-   (wrap-cors opssc/routes identity)
-   usrsc/routes
-   opssc/routes))
+(wrap-cors usrsc/routes #".*")
+(wrap-cors usrsc/routes identity)
+usrsc/routes
+))

@@ -13,7 +13,8 @@
     (GET "/list-orders" []
       :summary "get all issues"
       :header-params [authorization :- s/Str]
-      (ops-orders/get-recent-order authorization))
+      ;; (ops-orders/get-recent-order authorization)
+      (ok {:message "Hi from ayoung."}))
 
     (POST "/get-order-by-status" []
       :summary "List the order by status id"
