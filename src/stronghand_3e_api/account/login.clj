@@ -173,10 +173,10 @@
       (users/update-temp-mail conn/db {:EMAIL email :TEMP_TOKEN @pin-code :STATUS_ID active-status-id})
    ; Sending temp code.
       (mailling/send-mail! email
-                           "Resetting your Selendra password"
+                           "Resetting your STRONGHAND 3E password"
                            (str "Someone has asked to reset the password for your account.</br>If you did not request a password reset, you can disregard this email. No changes have been made to your account. <br/> <br/> 
                                  Below is your reset code:<br/> <br/>
-                                 " @pin-code "<br/> <br/> Best regards, <br/> Selendra  Team <br/> https://selendra.com"))
+                                 " @pin-code "<br/> <br/> Best regards, <br/> STRONGHAND 3E  Team <br/> https://stronghand3e.com"))
 
       (reset! pin-code (genpin/getpin))
       (ok {:message "We have sent you reset code please check your email"})
