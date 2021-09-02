@@ -1,10 +1,9 @@
+.lein-repl-history
 target/
-logs/op.log
-logs/tx.log
+logs/
 .config.edn
 .config.edn.sample
 .env
 dbs/
 img_db/
 remote_deploy.sh
-.lein-repl-history

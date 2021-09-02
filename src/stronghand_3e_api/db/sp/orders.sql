@@ -20,8 +20,8 @@ INSERT INTO ORDERS (
 );
 
 -- :name get-order-by-id :? :1
-SELECT * FROM ORDERS
-WHERE ID = :ID;
+-- SELECT * FROM ORDERS
+-- WHERE ID = :ID;
 
 -- :name get-issue-by-id :? :1
 SELECT * FROM ISSUES

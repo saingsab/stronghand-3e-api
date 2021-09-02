@@ -8,7 +8,8 @@
             [stronghand-3e-api.utils.conn :as conn]
             [stronghand-3e-api.db.sp-orders :as orders]
             [stronghand-3e-api.db.sp-issues :as issues]
-            [stronghand-3e-api.db.sp-rates :as rates]))
+            [stronghand-3e-api.db.sp-rates :as rates]
+            [stronghand-3e-api.utils.telbot :as telbot]))
 
 (def env (read-config ".config.edn"))
 (defn uuid [] (str (java.util.UUID/randomUUID)))
@@ -48,6 +49,7 @@
     (let [created-by (get (auth/token? token) :_id)]
       (try
         (reset! txid (java.util.UUID/randomUUID))
+        ;; Adding Order to db
         (orders/orders conn/db {:ID @txid
                                 :ISSUE_ID issue-id
                                 :OTHERS others
@@ -56,6 +58,13 @@
                                 :TOTAL (get (issues/get-issue-by-id conn/db issue-id) :price);;need to calculate get price from issuse
                                 :APPOINTMENT_AT appointment-at
                                 :CREATED_BY created-by})
+        ;; Sending Notify Operation
+        (telbot/send-message (str "New order\n " 
+                                  "ID: " @txid "\n" 
+                                  "Issue: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :issues_name) "\n" 
+                                  "Locations: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :locations) "\n" 
+                                  "Order by email: " (get (orders/get-users-by-id conn/db {:ID created-by}) :email) "\n"
+                                  "Order by Phone: " (get (orders/get-users-by-id conn/db {:ID created-by}) :phonenumber) "\n"))
         (ok {:message "Successfully Ordered" :estimate_price (get (issues/get-issue-by-id conn/db issue-id) :price)})
         (catch Exception ex
           (writelog/op-log! (str "ERROR : FN make-order " (.getMessage ex)))
