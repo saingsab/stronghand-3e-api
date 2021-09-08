@@ -189,17 +189,19 @@ CREATE TABLE IF NOT EXISTS IMAGE_STOCKS(
 -- : 10 ORDER STATUS
 CREATE TABLE IF NOT EXISTS ORDER_STATUS(
     ID	                VARCHAR (36) PRIMARY KEY,
-    ORDER_STATUS_DEC	TEXT
+    ORDER_STATUS_DEC	TEXT,
+    ORDER_STATUS_DEC_KH TEXT,
+    IDEX                NUMERIC
 );
 
 -- : PRE DATA ORDER STATUS
-INSERT INTO ORDER_STATUS (ID, ORDER_STATUS_DEC)
-VALUES  ('504e7e78-4c63-4d00-959b-55509a1a06f8', 'Place Order'),
-        ('e285725c-3958-4700-a751-f5e57e600a16', 'Technician Accepted'),
-        ('1a8bdfc5-a11a-42dd-b7e5-7d36cc605be4', 'On Our Way'),
-        ('1a8bdfc5-a11a-42dd-b7e5-7d36cc605bee', 'Arrived and Fixing'),
-        ('06eb36d5-8a81-477a-b4c1-2e72566559cc', 'Successfully Completed'),
-        ('06eb36d5-8a81-477a-b4c1-2e72566559dd', 'Cancelled');
+INSERT INTO ORDER_STATUS (ID, ORDER_STATUS_DEC, ORDER_STATUS_DEC_KH, IDEX)
+VALUES  ('504e7e78-4c63-4d00-959b-55509a1a06f8', 'Place Order', 'បញ្ជា កម្មង', 0),
+        ('e285725c-3958-4700-a751-f5e57e600a16', 'Technician Accepted', 'អ្នកបច្ចេកទេសទទួលយក', 1),
+        ('1a8bdfc5-a11a-42dd-b7e5-7d36cc605be4', 'On Our Way', 'កំពុងនៅតាមផ្លូវ', 2),
+        ('1a8bdfc5-a11a-42dd-b7e5-7d36cc605bee', 'Arrived and Fixing', 'បានមកដល់ហើយកំពុងជួសជុល', 3),
+        ('06eb36d5-8a81-477a-b4c1-2e72566559cc', 'Successfully Completed', 'បានបញ្ចប់ដោយជោគជ័យ', 4),
+        ('06eb36d5-8a81-477a-b4c1-2e72566559dd', 'Cancelled', 'បានលុបចោល', 5);
 
 -- : 11 STAFF LEVEL
 CREATE TABLE IF NOT EXISTS USER_LEVEL(
