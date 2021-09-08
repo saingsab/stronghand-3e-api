@@ -1,4 +1,4 @@
--- :name set-rates :? :n
+-- :name set-rates :! :n
 INSERT INTO RATES(
     ID,
     RATE_STAR,  

@@ -216,6 +216,6 @@
                                   :CREATED_BY created-by})
         (ok {:message "Thank you for your rating"})
         (catch Exception ex
-          (writelog/op-log! (str "ERROR : FN make-order " (.getMessage ex)))
+          (writelog/op-log! (str "ERROR : FN rate-technician " (.getMessage ex)))
           {:error {:message "Internal server error"}})))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))

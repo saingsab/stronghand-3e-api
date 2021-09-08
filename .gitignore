@@ -5,4 +5,5 @@ target/
 .env
 dbs/
 img_db/
+logs/
 remote_deploy.sh

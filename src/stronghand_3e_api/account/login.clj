@@ -250,6 +250,22 @@
       (writelog/op-log! (str "ERROR : " (.getMessage ex)))
       "Internal server error")))
 
+; Auth from OAuth ID token from apple
+;; (defn post-req-apple
+;;   [access-token]
+;;   (try
+;;     (println (json/read-str
+;;     ; Googleapis V1
+;;               (get (client/post (str "https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=" (get env :firebase))
+;;                                 {:form-params {:postBody (str "access_token=" access-token "&providerId=apple.com")
+;;                                                :requestUri "http://localhost"
+;;                                                :returnIdpCredential true
+;;                                                :returnSecureToken true}
+;;                                  :content-type :json}) :body) :key-fn keyword))
+;;     (catch Exception ex
+;;       (writelog/op-log! (str "ERROR : " (.getMessage ex)))
+;;       "Internal server error")))
+
 ; Auth from OAuth ID token from Google
 (defn post-req-google
   [id-token]
@@ -302,3 +318,17 @@
           (ok {:error {:message "Something went wrong on our end"}})))
       ; Exisitng email just return the JWT
       (ok {:token (tokens (id-by-email (get (post-req-google token) :email)))}))))
+
+(defn login-from-apple
+  [email]
+  (if (= (email-not-exist? email) true)
+    (try
+      (users/register-users-by-mail conn/db {:ID  @user-id  :EMAIL email :PASSWORD "********" :TEMP_TOKEN "0x" :STATUS_ID active-status-id})
+      (reset! user-id (uuid))
+        ; Sign JWT Token after write to db
+      (ok {:token (tokens (id-by-email email))})
+      (catch Exception ex
+        (writelog/op-log! (str "ERROR : " (.getMessage ex)))
+        (ok {:error {:message "Something went wrong on our end"}})))
+      ; Exisitng email just return the JWT
+    (ok {:token (tokens (id-by-email email)) :code (get (users/get-users-by-mail conn/db {:EMAIL email}) :phonenumber)})))

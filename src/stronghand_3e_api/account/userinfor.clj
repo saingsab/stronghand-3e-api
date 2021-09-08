@@ -10,7 +10,7 @@
   (get (status/get-status-by-name conn/db {:STATUS_NAME "active"}) :id))
 
 (defn setup-profile!
-  [token first_name mid_name last_name gender image_uri address]
+  [token first_name mid_name last_name phonenumber gender image_uri address]
   (if (= (auth/authorized? token) true)
   ; letdo
     (try
@@ -18,6 +18,7 @@
                                          :FIRST_NAME first_name
                                          :MID_NAME mid_name
                                          :LAST_NAME last_name
+                                         :PHONENUMBER phonenumber
                                          :GENDER gender
                                          :PROFILE_IMG image_uri
                                          :ADDRESS address
