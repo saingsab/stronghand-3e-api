@@ -23,9 +23,16 @@ INSERT INTO ORDERS (
 -- SELECT * FROM ORDERS
 -- WHERE ID = :ID;
 
+-- :name get-all_categories :? :*
+SELECT * FROM SUB_CATEGORIES;
+
 -- :name get-issue-by-id :? :1
 SELECT * FROM ISSUES
 WHERE ID = :ID;
+
+-- :name get-sub-category-id :? :*
+SELECT * FROM ISSUES
+WHERE SUB_CATEGORY_ID = :ID;
 
 -- :name get-order-top :? :*
 SELECT  o.ID, 

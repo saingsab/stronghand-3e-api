@@ -43,6 +43,27 @@
         {:error {:message "Internal server error"}}))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
+(defn list-all-sub-categories
+  [token]
+  (if (= (auth/authorized? token) true)
+    (try
+      (ok (orders/get-all_categories conn/db))
+      (catch Exception ex
+        (writelog/op-log! (str "ERROR : FN list-all-issues  " (.getMessage ex)))
+        {:error {:message "Internal server error"}}))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;; List issue by it's catagory
+(defn list-issues-by-categories
+  [token id]
+  (if (= (auth/authorized? token) true)
+    (try
+      (ok (orders/get-sub-category-id conn/db  {:ID id}))
+      (catch Exception ex
+        (writelog/op-log! (str "ERROR : FN list-issues-by-categories  " (.getMessage ex)))
+        {:error {:message "Internal server error"}}))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
 (defn make-order
   [token issue-id others images locations appointment-at]
   (if (= (auth/authorized? token) true)
@@ -59,10 +80,10 @@
                                 :APPOINTMENT_AT appointment-at
                                 :CREATED_BY created-by})
         ;; Sending Notify Operation
-        (telbot/send-message (str "New order\n " 
-                                  "ID: " @txid "\n" 
-                                  "Issue: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :issues_name) "\n" 
-                                  "Locations: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :locations) "\n" 
+        (telbot/send-message (str "New order\n "
+                                  "ID: " @txid "\n"
+                                  "Issue: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :issues_name) "\n"
+                                  "Locations: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :locations) "\n"
                                   "Order by email: " (get (orders/get-users-by-id conn/db {:ID created-by}) :email) "\n"
                                   "Order by Phone: " (get (orders/get-users-by-id conn/db {:ID created-by}) :phonenumber) "\n"))
         (ok {:message "Successfully Ordered" :estimate_price (get (issues/get-issue-by-id conn/db issue-id) :price)})

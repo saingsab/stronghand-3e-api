@@ -135,6 +135,17 @@
       :header-params [authorization :- s/Str]
       (usr-orders/list-all-issues authorization))
 
+    (GET "/list-all-sub-categories" []
+      :summary "get all sub categories"
+      :header-params [authorization :- s/Str]
+      (usr-orders/list-all-sub-categories authorization))
+
+    (POST "/list-issues-by-categories" []
+      :summary "List Issues by it's categories"
+      :header-params [authorization :- s/Str]
+      :body-params [id :- s/Str]
+      (usr-orders/list-issues-by-categories authorization id))
+
     (POST "/cancel-order" []
       :summary "Cancel order from user"
       :header-params [authorization :- s/Str]
