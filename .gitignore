@@ -1,6 +1,5 @@
 .lein-repl-history
 target/
-logs/
 .config.edn
 .config.edn.sample
 .env
