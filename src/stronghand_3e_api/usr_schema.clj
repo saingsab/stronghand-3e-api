@@ -251,11 +251,11 @@
       :summary "Adding solution and order status"
       :header-params [authorization :- s/Str]
       :body-params [order_id :- s/Str, solutions :- s/Str, total :- s/Num, status_id :- s/Str]
-      (ops-orders/get-technician-by-phone authorization
-                                          order_id
-                                          solutions
-                                          total
-                                          status_id))
+      (ops-orders/update-order-status authorization
+                                      order_id
+                                      solutions
+                                      total
+                                      status_id))
 
     (GET "/get-dept" []
       :summary "List all departments"
