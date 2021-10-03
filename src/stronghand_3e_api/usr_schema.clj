@@ -37,6 +37,19 @@
       :summary "Login with phone number get back token"
       (login/login-by-phone phone password))
 
+    (POST "/add-phonenumber"  []
+      :header-params [authorization :- s/Str]
+      :body-params [phone :- s/Str]
+      :summary "Add phone number to existing user to verify"
+      (userinfor/add-phone-number authorization phone))
+
+    (POST "/account-confirmation" []
+      :body-params [phone :- s/Str, verification_code :- s/Str]
+      :summary "Confirm user account from phone"
+      (if (= (activation/activate-user-by-phone phone verification_code) true)
+        (ok {:message "User successfully activated"})
+        (ok {:error {:message "User failed activation"}})))
+
     (POST "/account-confirmation" []
       :body-params [phone :- s/Str, verification_code :- s/Str]
       :summary "Confirm user account from phone"
