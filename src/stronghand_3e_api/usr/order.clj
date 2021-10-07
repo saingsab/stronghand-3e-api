@@ -137,8 +137,9 @@
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
   ;; Update order status by operation or tech team only
+  ;; Adding change the time
 (defn update-order-status
-  [token order_id solutions total status_id]
+  [token order_id solutions total status_id appointment_at]
   (if (= (auth/authorized? token) true)
     (let [user_id (get (auth/token? token) :_id)]
       (if (true? (is-user? user_id))
@@ -147,6 +148,7 @@
                                          :SOLUTIONS solutions
                                          :TOTAL total
                                          :ORDER_STATUS status_id
+                                         :APPOINTMENT_AT appointment_at
                                          :UPDATED_BY user_id})
           (ok {:message "Order status successfully updated"})
           (catch Exception ex

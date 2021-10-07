@@ -263,12 +263,13 @@
     (POST "/update-order-status" []
       :summary "Adding solution and order status"
       :header-params [authorization :- s/Str]
-      :body-params [order_id :- s/Str, solutions :- s/Str, total :- s/Num, status_id :- s/Str]
+      :body-params [order_id :- s/Str, solutions :- s/Str, total :- s/Num, status_id :- s/Str, appointment_at :- s/Int]
       (ops-orders/update-order-status authorization
                                       order_id
                                       solutions
                                       total
-                                      status_id))
+                                      status_id
+                                      appointment_at))
 
     (GET "/get-dept" []
       :summary "List all departments"
