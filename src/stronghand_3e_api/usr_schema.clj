@@ -266,7 +266,5 @@
       :summary "Provission user to be a staff"
       :header-params [authorization :- s/Str]
       :body-params [user_id :- s/Str, status_id :- s/Str]
-      (staff/update-user-status authorization user_id status_id))
+      (staff/update-user-status authorization user_id status_id))))
 ;;
-    ))
-
