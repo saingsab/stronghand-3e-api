@@ -23,9 +23,16 @@ INSERT INTO ORDERS (
 -- SELECT * FROM ORDERS
 -- WHERE ID = :ID;
 
+-- :name get-all_categories :? :*
+SELECT * FROM SUB_CATEGORIES;
+
 -- :name get-issue-by-id :? :1
 SELECT * FROM ISSUES
 WHERE ID = :ID;
+
+-- :name get-sub-category-id :? :*
+SELECT * FROM ISSUES
+WHERE SUB_CATEGORY_ID = :ID;
 
 -- :name get-order-top :? :*
 SELECT  o.ID, 
@@ -66,6 +73,7 @@ INNER JOIN ISSUES AS i
 ON o.ISSUE_ID = i.ID
 INNER JOIN ORDER_STATUS AS os
 ON o.ORDER_STATUS = os.ID
+WHERE o.ORDER_STATUS = '504e7e78-4c63-4d00-959b-55509a1a06f8' -- status accepted order only
 ORDER BY o.CREATED_AT ASC
 LIMIT 10;
 

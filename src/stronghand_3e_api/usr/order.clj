@@ -43,6 +43,27 @@
         {:error {:message "Internal server error"}}))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
+(defn list-all-sub-categories
+  [token]
+  (if (= (auth/authorized? token) true)
+    (try
+      (ok (orders/get-all_categories conn/db))
+      (catch Exception ex
+        (writelog/op-log! (str "ERROR : FN list-all-issues  " (.getMessage ex)))
+        {:error {:message "Internal server error"}}))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+;; List issue by it's catagory
+(defn list-issues-by-categories
+  [token id]
+  (if (= (auth/authorized? token) true)
+    (try
+      (ok (orders/get-sub-category-id conn/db  {:ID id}))
+      (catch Exception ex
+        (writelog/op-log! (str "ERROR : FN list-issues-by-categories  " (.getMessage ex)))
+        {:error {:message "Internal server error"}}))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
 (defn make-order
   [token issue-id others images locations appointment-at]
   (if (= (auth/authorized? token) true)
@@ -59,10 +80,10 @@
                                 :APPOINTMENT_AT appointment-at
                                 :CREATED_BY created-by})
         ;; Sending Notify Operation
-        (telbot/send-message (str "New order\n " 
-                                  "ID: " @txid "\n" 
-                                  "Issue: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :issues_name) "\n" 
-                                  "Locations: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :locations) "\n" 
+        (telbot/send-message (str "New order\n "
+                                  "ID: " @txid "\n"
+                                  "Issue: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :issues_name) "\n"
+                                  "Locations: " (get (orders/get-order-by-id conn/db {:ID (str @txid)}) :locations) "\n"
                                   "Order by email: " (get (orders/get-users-by-id conn/db {:ID created-by}) :email) "\n"
                                   "Order by Phone: " (get (orders/get-users-by-id conn/db {:ID created-by}) :phonenumber) "\n"))
         (ok {:message "Successfully Ordered" :estimate_price (get (issues/get-issue-by-id conn/db issue-id) :price)})
@@ -116,8 +137,9 @@
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
   ;; Update order status by operation or tech team only
+  ;; Adding change the time
 (defn update-order-status
-  [token order_id solutions total status_id]
+  [token order_id solutions total status_id appointment_at]
   (if (= (auth/authorized? token) true)
     (let [user_id (get (auth/token? token) :_id)]
       (if (true? (is-user? user_id))
@@ -126,6 +148,7 @@
                                          :SOLUTIONS solutions
                                          :TOTAL total
                                          :ORDER_STATUS status_id
+                                         :APPOINTMENT_AT appointment_at
                                          :UPDATED_BY user_id})
           (ok {:message "Order status successfully updated"})
           (catch Exception ex
@@ -195,6 +218,6 @@
                                   :CREATED_BY created-by})
         (ok {:message "Thank you for your rating"})
         (catch Exception ex
-          (writelog/op-log! (str "ERROR : FN make-order " (.getMessage ex)))
+          (writelog/op-log! (str "ERROR : FN rate-technician " (.getMessage ex)))
           {:error {:message "Internal server error"}})))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))

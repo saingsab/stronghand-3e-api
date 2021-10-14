@@ -37,6 +37,19 @@
       :summary "Login with phone number get back token"
       (login/login-by-phone phone password))
 
+    (POST "/add-phonenumber"  []
+      :header-params [authorization :- s/Str]
+      :body-params [phone :- s/Str]
+      :summary "Add phone number to existing user to verify"
+      (userinfor/add-phone-number authorization phone))
+
+    (POST "/account-confirmation" []
+      :body-params [phone :- s/Str, verification_code :- s/Str]
+      :summary "Confirm user account from phone"
+      (if (= (activation/activate-user-by-phone phone verification_code) true)
+        (ok {:message "User successfully activated"})
+        (ok {:error {:message "User failed activation"}})))
+
     (POST "/account-confirmation" []
       :body-params [phone :- s/Str, verification_code :- s/Str]
       :summary "Confirm user account from phone"
@@ -98,14 +111,20 @@
       :summary "Provide OAuth token return JWT token"
       (login/login-from-facebook token))
 
+    (POST "/login-from-apple" []
+      :body-params [token :- s/Str]
+      :summary "Login form aple ID"
+      (login/login-from-apple token))
+
     (POST "/setup-profile" []
       :summary "Setting up user profile"
       :header-params [authorization :- s/Str]
-      :body-params [first_name :- s/Str, mid_name :- s/Str, last_name :- s/Str, gender :- s/Str, image_uri :- s/Str, address :- s/Str]
+      :body-params [first_name :- s/Str, mid_name :- s/Str, last_name :- s/Str, phonenumber :- s/Str, gender :- s/Str, image_uri :- s/Str, address :- s/Str]
       (userinfor/setup-profile! authorization
                                 first_name
                                 mid_name
                                 last_name
+                                phonenumber
                                 gender
                                 image_uri
                                 address))
@@ -134,6 +153,17 @@
       :summary "get all issues"
       :header-params [authorization :- s/Str]
       (usr-orders/list-all-issues authorization))
+
+    (GET "/list-all-sub-categories" []
+      :summary "get all sub categories"
+      :header-params [authorization :- s/Str]
+      (usr-orders/list-all-sub-categories authorization))
+
+    (POST "/list-issues-by-categories" []
+      :summary "List Issues by it's categories"
+      :header-params [authorization :- s/Str]
+      :body-params [id :- s/Str]
+      (usr-orders/list-issues-by-categories authorization id))
 
     (POST "/cancel-order" []
       :summary "Cancel order from user"
@@ -233,12 +263,13 @@
     (POST "/update-order-status" []
       :summary "Adding solution and order status"
       :header-params [authorization :- s/Str]
-      :body-params [order_id :- s/Str, solutions :- s/Str, total :- s/Num, status_id :- s/Str]
-      (ops-orders/get-technician-by-phone authorization
-                                          order_id
-                                          solutions
-                                          total
-                                          status_id))
+      :body-params [order_id :- s/Str, solutions :- s/Str, total :- s/Num, status_id :- s/Str, appointment_at :- s/Int]
+      (ops-orders/update-order-status authorization
+                                      order_id
+                                      solutions
+                                      total
+                                      status_id
+                                      appointment_at))
 
     (GET "/get-dept" []
       :summary "List all departments"
