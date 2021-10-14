@@ -11,6 +11,8 @@
 (def Status
   (get (status/get-status-by-name conn/db {:STATUS_NAME "active"}) :id))
 
+(def pin-code (atom (genpin/getpin)))
+
 (defn phone-not-exist?
   [phone]
   (nil? (users/get-users-by-phone conn/db {:PHONENUMBER phone})))
@@ -19,7 +21,7 @@
   [token first_name mid_name last_name phonenumber gender image_uri address]
   (if (= (auth/authorized? token) true)
   ; double check the phonenumber if it's already exist
-    (if (= (phone-not-exist? phone) true)
+    (if (= (phone-not-exist? phonenumber) true)
       (try
         (users/setup-user-profile conn/db {:ID (get (auth/token? token) :_id)
                                           :FIRST_NAME first_name
@@ -48,14 +50,16 @@
 
     ; Verify valid phone first before add to db
 (defn add-phone-number
-  [token phone]
+  [token phonenumber]
   (if (= (auth/authorized? token) true)
-    (try
-      (users/set-phonenumber-by-id conn/db {:ID (get (auth/token? token) :_id) :PHONENUMBER phone :TEMP_TOKEN @pin-code})
-      (sms/send-sms (str "Your STRONGHAND 3E verification code is:" @pin-code) phone)
+    (if (= (phone-not-exist? phonenumber) true)
+      (try
+      (users/set-phonenumber-by-id conn/db {:ID (get (auth/token? token) :_id) :PHONENUMBER phonenumber :TEMP_TOKEN @pin-code})
+      (sms/send-sms (str "Your STRONGHAND 3E verification code is:" @pin-code) phonenumber)
       (reset! pin-code (genpin/getpin))
-      (ok {:message (str "We've sent you an SMS with the code to " phone)})
+      (ok {:message (str "We've sent you an SMS with the code to " phonenumber)})
       (catch Exception ex
         (writelog/op-log! (str "ERROR : FN add-phone-number" (.getMessage ex)))
         (ok {:error {:message "Something went wrong on our end"}})))
+      (ok {:message "Your phone number already exists!"}))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
