@@ -1,4 +1,5 @@
 .lein-repl-history
+logs/op.log
 target/
 .config.edn
 .config.edn.sample

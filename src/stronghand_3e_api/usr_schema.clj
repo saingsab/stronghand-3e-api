@@ -119,12 +119,11 @@
     (POST "/setup-profile" []
       :summary "Setting up user profile"
       :header-params [authorization :- s/Str]
-      :body-params [first_name :- s/Str, mid_name :- s/Str, last_name :- s/Str, phonenumber :- s/Str, gender :- s/Str, image_uri :- s/Str, address :- s/Str]
+      :body-params [first_name :- s/Str, mid_name :- s/Str, last_name :- s/Str, gender :- s/Str, image_uri :- s/Str, address :- s/Str]
       (userinfor/setup-profile! authorization
                                 first_name
                                 mid_name
                                 last_name
-                                phonenumber
                                 gender
                                 image_uri
                                 address))

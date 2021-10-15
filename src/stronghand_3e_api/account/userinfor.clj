@@ -18,7 +18,7 @@
   (nil? (users/get-users-by-phone conn/db {:PHONENUMBER phone})))
 
 (defn setup-profile!
-  [token first_name mid_name last_name phonenumber gender image_uri address]
+  [token first_name mid_name last_name gender image_uri address]
   (if (= (auth/authorized? token) true)
   ; Setting up profile does not need to set phonenumber
     ;; (if (= (phone-not-exist? phonenumber) true)
