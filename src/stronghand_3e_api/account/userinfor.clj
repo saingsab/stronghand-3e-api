@@ -20,8 +20,8 @@
 (defn setup-profile!
   [token first_name mid_name last_name phonenumber gender image_uri address]
   (if (= (auth/authorized? token) true)
-  ; double check the phonenumber if it's already exist
-    (if (= (phone-not-exist? phonenumber) true)
+  ; Setting up profile does not need to set phonenumber
+    ;; (if (= (phone-not-exist? phonenumber) true)
       (try
         (users/setup-user-profile conn/db {:ID (get (auth/token? token) :_id)
                                           :FIRST_NAME first_name
@@ -35,7 +35,7 @@
       (catch Exception ex
         (writelog/op-log! (str "ERROR : " (.getMessage ex)))
         {:error {:message "Something went wrong on our end"}}))
-    (ok {:message "Your phone number already exists!"}))
+    ;; (ok {:message "Your phone number already exists!"}))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
 (defn get-user-profile
@@ -54,10 +54,10 @@
   (if (= (auth/authorized? token) true)
     (if (= (phone-not-exist? phonenumber) true)
       (try
-      (users/set-phonenumber-by-id conn/db {:ID (get (auth/token? token) :_id) :PHONENUMBER phonenumber :TEMP_TOKEN @pin-code})
-      (sms/send-sms (str "Your STRONGHAND 3E verification code is:" @pin-code) phonenumber)
-      (reset! pin-code (genpin/getpin))
-      (ok {:message (str "We've sent you an SMS with the code to " phonenumber)})
+        (users/set-phonenumber-by-id conn/db {:ID (get (auth/token? token) :_id) :PHONENUMBER phonenumber :TEMP_TOKEN @pin-code})
+        (sms/send-sms (str "Your STRONGHAND 3E verification code is:" @pin-code) phonenumber)
+        (reset! pin-code (genpin/getpin))
+        (ok {:message (str "We've sent you an SMS with the code to " phonenumber)})
       (catch Exception ex
         (writelog/op-log! (str "ERROR : FN add-phone-number" (.getMessage ex)))
         (ok {:error {:message "Something went wrong on our end"}})))

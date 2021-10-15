@@ -64,9 +64,15 @@
         {:error {:message "Internal server error"}}))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
+    ;; (if (and (not= (get (users/get-users-token conn/db {:ID (get (auth/token? token) :_id)}) :temp_token) "0") 
+    ;;          (nil? (get  (users/get-users-token conn/db {:ID (get (auth/token? token) :_id)}) :phonenumber)))
+
+
+;; User are reqired to have phone number to make an order
 (defn make-order
   [token issue-id others images locations appointment-at]
-  (if (= (auth/authorized? token) true)
+  (if (and (= (auth/authorized? token) true)
+           (not= nil (get (orders/get-users-by-id conn/db {:ID (get (auth/token? token) :_id)}) :phonenumber)) )
     (let [created-by (get (auth/token? token) :_id)]
       (try
         (reset! txid (java.util.UUID/randomUUID))
@@ -90,7 +96,7 @@
         (catch Exception ex
           (writelog/op-log! (str "ERROR : FN make-order " (.getMessage ex)))
           {:error {:message "Internal server error"}})))
-    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+    (ok {:error {:message "Opp! You need to add your phone number first"}})))
 
 ;; Select top 10 of recent order. 
 (defn get-recent-order
