@@ -29,8 +29,8 @@
 
     (POST "/resend-code" []
       :summary "Provide phone number to get new ativation code"
-      :body-params [phone :- s/Str, password :- s/Str]
-      (register/account-by-phone phone password))
+      :body-params [phone :- s/Str]
+      (register/resend-code phone ))
 
     (POST "/login-by-phone" []
       :body-params [phone :- s/Str, password :- s/Str]
