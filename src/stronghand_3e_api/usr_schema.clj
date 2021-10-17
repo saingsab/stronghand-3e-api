@@ -190,6 +190,11 @@
                                   rate_star
                                   rate_dec
                                   rate_to))
+    
+    (GET "/get-rates" []
+      :summary "Get list of rates by user"
+      :header-params [authorization :- s/Str]
+      (usr-orders/get-rate-by-owner authorization))
 
     (GET "/list-order-status" []
       :summary "List the order status"

@@ -14,19 +14,21 @@ VALUES (
     :CREATED_BY
  );
 
---  :name get-rate-by-owner :? :1
-SELECT  r.ID, 
-        r.RATE_STAR, 
-        r.RATE_DEC, 
-        (u.FIRST_NAME, u.LAST_NAME) AS TECHNICIANS, 
-        u.EMAIL, 
-        u.PHONENUMBER
-FROM RATES AS r
+--  :name get-rate-by-owner :? :*
+SELECT r.ID, 
+       r.RATE_STAR, 
+       r.RATE_DEC, 
+       o.TECHNICIANS[1], 
+       (u.FIRST_NAME, u.LAST_NAME) AS TECHNICIANS,
+       r.CREATED_AT
+FROM ORDERS AS o
+INNER JOIN RATES AS r
+ON o.ID = r.RATE_TO
 INNER JOIN USERS AS u
-ON r.rate_to = u.ID
+ON o.TECHNICIANS[1] = u.ID
 WHERE r.CREATED_BY = :CREATED_BY;
 
---  :name get-rate-from-date-to-date :? :1
+--  :name get-rate-from-date-to-date :? :*
 SELECT  r.ID, 
         r.RATE_STAR, 
         r.RATE_DEC, 

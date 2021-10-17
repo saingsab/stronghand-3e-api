@@ -211,6 +211,7 @@
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
 
 ;; Rates technicians
+;; rate-to = is ID of order that's contain bulk of tech ID
 (defn rate-technician
   [token rate-star rate-dec rate-to]
   (if (= (auth/authorized? token) true)
@@ -225,5 +226,16 @@
         (ok {:message "Thank you for your rating"})
         (catch Exception ex
           (writelog/op-log! (str "ERROR : FN rate-technician " (.getMessage ex)))
+          {:error {:message "Internal server error"}})))
+    (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
+
+(defn get-rate-by-owner 
+  [token]
+  (if (= (auth/authorized? token) true)
+    (let [created-by (get (auth/token? token) :_id)]
+      (try
+        (ok (rates/get-rate-by-owner conn/db {:CREATED_BY created-by}))
+        (catch Exception ex
+          (writelog/op-log! (str "ERROR : FN get-rate-by-owner " (.getMessage ex)))
           {:error {:message "Internal server error"}})))
     (unauthorized {:error {:message "Unauthorized operation not permitted"}})))
