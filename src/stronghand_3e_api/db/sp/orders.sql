@@ -179,11 +179,12 @@ ORDER BY o.CREATED_AT ASC;
 -- :name update-orders :! :n
 -- :doc Update order status
 UPDATE ORDERS
-SET SOLUTIONS = :SOLUTIONS,
-    TOTAL = :TOTAL,
-    ORDER_STATUS  = :ORDER_STATUS,
-    UPDATED_BY = :UPDATED_BY,
-    UPDATED_AT = CURRENT_TIMESTAMP
+SET SOLUTIONS      = :SOLUTIONS,
+    TOTAL          = :TOTAL,
+    ORDER_STATUS   = :ORDER_STATUS,
+    UPDATED_BY     = :UPDATED_BY,
+    APPOINTMENT_AT = :APPOINTMENT_AT,
+    UPDATED_AT     = CURRENT_TIMESTAMP
 WHERE ID = :ID;
 
 -- :name assign-technician :! :n

@@ -97,7 +97,7 @@
 
   ;; Update order status by operation or tech team only
 (defn update-order-status
-  [token order-id solutions total status-id]
+  [token order-id solutions total status-id appointment-at]
   (if (= (auth/authorized? token) true)
     (let [user-id (get (auth/token? token) :_id)]
       (if (true? (is-staff? user-id))
@@ -106,6 +106,7 @@
                                          :SOLUTIONS solutions
                                          :TOTAL total
                                          :ORDER_STATUS status-id
+                                         :APPOINTMENT_AT appointment-at
                                          :UPDATED_BY user-id})
           (ok {:message "Order status successfully updated"})
           (catch Exception ex
